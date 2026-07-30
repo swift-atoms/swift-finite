@@ -39,7 +39,7 @@ extension Finite {
             var index: Ordinal_Primitives.Ordinal = .zero
 
             @inlinable
-            init() {}
+            package init() {}
 
             /// Returns the next value, or `nil` if exhausted.
             @inlinable
