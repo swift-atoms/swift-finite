@@ -72,7 +72,12 @@ extension Tagged where Tag: ~Copyable & ~Escapable {
     @inlinable
     public func predecessor<let N: Int>() -> Self?
     where Tag == Finite.Bound<N>, Underlying == Ordinal {
-        guard let previous = try? underlying.predecessor.exact() else { return nil }
+        let previous: Ordinal
+        do throws(Ordinal.Error) {
+            previous = try underlying.predecessor.exact()
+        } catch {
+            return nil
+        }
         return Self(_unchecked: previous)
     }
 }
@@ -109,7 +114,9 @@ extension Tagged where Tag: ~Copyable & ~Escapable {
     @inlinable
     public func distance<let N: Int>(to other: Self) -> Int
     where Tag == Finite.Bound<N>, Underlying == Ordinal {
-        Int(bitPattern: other) - Int(bitPattern: self)
+        let otherPosition = Int(bitPattern: other)
+        let selfPosition = Int(bitPattern: self)
+        return otherPosition - selfPosition
     }
 }
 
@@ -173,7 +180,9 @@ extension Tagged where Tag: ~Copyable & ~Escapable {
     /// - Returns: `(row, column)`, or `nil` if `Rows × Columns ≠ N`.
     @inlinable
     public func decomposed<let N: Int, let Rows: Int, let Columns: Int>()
-        -> (row: Tagged<Finite.Bound<Rows>, Ordinal>, column: Tagged<Finite.Bound<Columns>, Ordinal>)?
+        -> (
+            row: Tagged<Finite.Bound<Rows>, Ordinal>, column: Tagged<Finite.Bound<Columns>, Ordinal>
+        )?
     where Tag == Finite.Bound<N>, Underlying == Ordinal {
         guard Rows * Columns == N else { return nil }
         let position = Int(bitPattern: self)
@@ -207,7 +216,9 @@ extension Tagged where Tag: ~Copyable & ~Escapable {
     ) -> Self?
     where Tag == Finite.Bound<N>, Underlying == Ordinal {
         guard Rows * Columns == N else { return nil }
-        let position = Int(bitPattern: row) * Columns + Int(bitPattern: column)
+        let rowPosition = Int(bitPattern: row)
+        let columnPosition = Int(bitPattern: column)
+        let position = rowPosition * Columns + columnPosition
         return Self(_unchecked: position)
     }
 }

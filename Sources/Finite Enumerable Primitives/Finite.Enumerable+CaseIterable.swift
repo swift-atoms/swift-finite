@@ -55,7 +55,8 @@ import Ordinal_Primitives
 /// Operation.add.ordinal      // 0 (from CaseIterable bridge)
 /// Operation(0)               // .add (from Finite.Enumerable's init?(_:))
 /// ```
-extension Finite.Enumerable where AllCases: RandomAccessCollection, AllCases.Index == Int, Self: Equatable {
+extension Finite.Enumerable
+where AllCases: RandomAccessCollection, AllCases.Index == Int, Self: Equatable {
     /// Number of distinct values, derived from `allCases.count`.
     @inlinable
     public static var count: Cardinal {
