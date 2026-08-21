@@ -12,13 +12,12 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        // MARK: - Namespace
+
         .library(
             name: "Finite Primitive",
             targets: ["Finite Primitive"]
         ),
 
-        // MARK: - Sub-namespace targets
         .library(
             name: "Finite Capacity Primitives",
             targets: ["Finite Capacity Primitives"]
@@ -32,13 +31,11 @@ let package = Package(
             targets: ["Finite Bounded Primitives"]
         ),
 
-        // MARK: - Umbrella
         .library(
             name: "Finite Primitives",
             targets: ["Finite Primitives"]
         ),
 
-        // MARK: - Test Support
         .library(
             name: "Finite Primitives Test Support",
             targets: ["Finite Primitives Test Support"]
@@ -67,13 +64,12 @@ let package = Package(
         ),
     ],
     targets: [
-        // MARK: - Namespace
+
         .target(
             name: "Finite Primitive",
             dependencies: []
         ),
 
-        // MARK: - Sub-namespace targets (per [MOD-031])
         .target(
             name: "Finite Capacity Primitives",
             dependencies: [
@@ -105,7 +101,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Umbrella
         .target(
             name: "Finite Primitives",
             dependencies: [
@@ -116,7 +111,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Test Support
         .target(
             name: "Finite Primitives Test Support",
             dependencies: [
@@ -126,7 +120,6 @@ let package = Package(
             path: "Tests/Support"
         ),
 
-        // MARK: - Tests
         .testTarget(
             name: "Finite Primitives Tests",
             dependencies: [

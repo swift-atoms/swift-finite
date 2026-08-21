@@ -1,12 +1,7 @@
-// Ordinal Tests.swift
-// Tests for Ordinal.Finite<N> = Tagged<Finite.Bound<N>, Ordinal>
-
 import Finite_Primitives_Test_Support
 import Testing
 
 @testable import Finite_Primitives
-
-// MARK: - Ordinal.Finite - Properties
 
 @Suite
 struct `Ordinal_Finite - Properties` {
@@ -43,8 +38,6 @@ struct `Ordinal_Finite - Properties` {
         #expect(zero == 0)
     }
 }
-
-// MARK: - Ordinal.Finite - Successor / Predecessor
 
 @Suite
 struct `Ordinal_Finite - Successor and Predecessor` {
@@ -88,8 +81,6 @@ struct `Ordinal_Finite - Successor and Predecessor` {
     }
 }
 
-// MARK: - Ordinal.Finite - Distance / Offset
-
 @Suite
 struct `Ordinal_Finite - Distance and Offset` {
     @Test
@@ -123,8 +114,6 @@ struct `Ordinal_Finite - Distance and Offset` {
     }
 }
 
-// MARK: - Ordinal.Finite - Complement
-
 @Suite
 struct `Ordinal_Finite - Complement` {
     @Test
@@ -143,8 +132,6 @@ struct `Ordinal_Finite - Complement` {
         }
     }
 }
-
-// MARK: - Ordinal.Finite - Product Isomorphism
 
 @Suite
 struct `Ordinal_Finite - Product Isomorphism` {
@@ -190,8 +177,6 @@ struct `Ordinal_Finite - Product Isomorphism` {
     }
 }
 
-// MARK: - Ordinal.Finite - Initializers
-
 @Suite
 struct `Ordinal_Finite - Initializers` {
     @Test(arguments: [0, 1, 2, 3, 4])
@@ -220,8 +205,6 @@ struct `Ordinal_Finite - Initializers` {
         #expect(ordinal == Ordinal.Finite(value)!)
     }
 }
-
-// MARK: - Ordinal.Finite - Injection / Projection
 
 @Suite
 struct `Ordinal_Finite - Injection and Projection` {
@@ -254,8 +237,6 @@ struct `Ordinal_Finite - Injection and Projection` {
     }
 }
 
-// MARK: - Ordinal.Finite - Protocol Conformances
-
 @Suite
 struct `Ordinal_Finite - Protocol Conformances` {
     @Test
@@ -287,8 +268,6 @@ struct `Ordinal_Finite - Protocol Conformances` {
         let _: any Sendable = ordinal
     }
 }
-
-// MARK: - Ordinal.Finite - Type Structure
 
 @Suite
 struct `Ordinal_Finite - Type Structure` {

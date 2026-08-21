@@ -1,11 +1,7 @@
-// Enumeration Tests.swift
-
 import Finite_Primitives_Test_Support
 import Testing
 
 @testable import Finite_Primitives
-
-// MARK: - Enumeration - Collection Conformance
 
 @Suite
 struct `Enumeration - Collection` {
@@ -46,8 +42,6 @@ struct `Enumeration - Collection` {
     }
 }
 
-// MARK: - Enumeration - BidirectionalCollection
-
 @Suite
 struct `Enumeration - BidirectionalCollection` {
     @Test
@@ -70,8 +64,6 @@ struct `Enumeration - BidirectionalCollection` {
         #expect(reversed[2] == 0)
     }
 }
-
-// MARK: - Enumeration - RandomAccessCollection
 
 @Suite
 struct `Enumeration - RandomAccessCollection` {
@@ -143,8 +135,6 @@ struct `Enumeration - RandomAccessCollection` {
     }
 }
 
-// MARK: - Enumeration - Iterator
-
 @Suite
 struct `Enumeration - Iterator` {
     @Test
@@ -184,8 +174,6 @@ struct `Enumeration - Iterator` {
     }
 }
 
-// MARK: - Enumeration - Total Element Access
-
 @Suite
 struct `Enumeration - Total Element Access` {
     @Test(arguments: [0, 1, 2, 3, 4])
@@ -202,8 +190,6 @@ struct `Enumeration - Total Element Access` {
         #expect(element == nil)
     }
 }
-
-// MARK: - Enumeration - Zero-Cost Abstraction
 
 @Suite
 struct `Enumeration - Zero-Cost` {

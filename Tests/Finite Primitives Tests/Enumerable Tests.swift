@@ -1,15 +1,10 @@
-// Enumerable Tests.swift
-
 import Finite_Primitives_Test_Support
 import Testing
 
 @testable import Finite_Primitives
 
-// MARK: - Enumerable Tests
-
 @Suite
 struct `Enumerable - Protocol` {
-    // Test with Ordinal.Finite which conforms to Enumerable
 
     @Test
     func `count returns correct count`() {
@@ -57,8 +52,6 @@ struct `Enumerable - Protocol` {
         #expect(invalid == nil)
     }
 }
-
-// MARK: - Enumerable with Ordinal
 
 @Suite
 struct `Enumerable - Ordinal Tests` {

@@ -1,12 +1,7 @@
-// Index.Bounded.Tests.swift
-// Tests for Index<Element>.Bounded<N> = Tagged<Element, Ordinal.Finite<N>>
-
 import Finite_Primitives_Test_Support
 import Testing
 
 @testable import Finite_Primitives
-
-// MARK: - Index.Bounded - Type Structure
 
 @Suite
 struct `Index_Bounded - Type Structure` {
@@ -31,8 +26,6 @@ struct `Index_Bounded - Type Structure` {
         #expect(MemoryLayout<Index<Int>.Bounded<8>>.alignment == MemoryLayout<Index<Int>>.alignment)
     }
 }
-
-// MARK: - Index.Bounded - Bridging
 
 @Suite
 struct `Index_Bounded - Bridging` {
@@ -67,8 +60,6 @@ struct `Index_Bounded - Bridging` {
         #expect(viaInit == viaMap)
     }
 }
-
-// MARK: - Index.Bounded - Arithmetic via underlying
 
 @Suite
 struct `Index_Bounded - Arithmetic` {
@@ -109,8 +100,6 @@ struct `Index_Bounded - Arithmetic` {
         #expect(offset == expected)
     }
 }
-
-// MARK: - Index.Bounded - Edge Cases
 
 @Suite
 struct `Index_Bounded - Edge Cases` {
