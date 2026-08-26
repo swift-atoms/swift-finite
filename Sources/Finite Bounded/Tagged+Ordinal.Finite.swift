@@ -1,7 +1,7 @@
-import Finite_Capacity_Primitives
+import Finite_Capacity
 public import Finite_Primitive
-import Ordinal_Primitives
-import Tagged_Primitives
+import Ordinal
+import Tagged
 
 extension Tagged where Tag: ~Copyable & ~Escapable {
 

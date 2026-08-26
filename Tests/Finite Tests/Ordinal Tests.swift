@@ -1,7 +1,7 @@
-import Finite_Primitives_Test_Support
+import Finite_Test_Support
 import Testing
 
-@testable import Finite_Primitives
+@testable import Finite
 
 @Suite
 struct `Ordinal_Finite - Properties` {

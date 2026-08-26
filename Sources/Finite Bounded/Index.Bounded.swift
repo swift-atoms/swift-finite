@@ -1,7 +1,7 @@
 public import Finite_Primitive
-import Index_Primitives
-import Ordinal_Primitives
-import Tagged_Primitives
+import Index
+import Ordinal
+import Tagged
 
 extension Tagged where Underlying == Ordinal, Tag: ~Copyable & ~Escapable {
 

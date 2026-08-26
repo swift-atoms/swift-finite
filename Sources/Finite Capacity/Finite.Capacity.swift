@@ -1,4 +1,4 @@
-import Cardinal_Primitives
+import Cardinal
 public import Finite_Primitive
 
 extension Finite {
