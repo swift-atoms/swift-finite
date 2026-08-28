@@ -12,40 +12,120 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
+
+        .library(
+            name: "Finite Primitive",
+            targets: ["Finite Primitive"]
+        ),
+
+        .library(
+            name: "Finite Capacity",
+            targets: ["Finite Capacity"]
+        ),
+        .library(
+            name: "Finite Enumerable",
+            targets: ["Finite Enumerable"]
+        ),
+        .library(
+            name: "Finite Bounded",
+            targets: ["Finite Bounded"]
+        ),
+
         .library(
             name: "Finite",
             targets: ["Finite"]
         ),
+
         .library(
-            name: "Finite Standard Library Integration",
-            targets: ["Finite Standard Library Integration"]
-        ),
-        .library(
-            name: "Finite Apple Foundation Integration",
-            targets: ["Finite Apple Foundation Integration"]
+            name: "Finite Test Support",
+            targets: ["Finite Test Support"]
         ),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(
+            url: "https://github.com/swift-molecules/swift-cardinal.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-molecules/swift-ordinal.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-molecules/swift-tagged.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-molecules/swift-index.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-molecules/swift-iterator.git",
+            branch: "main"
+        ),
+    ],
     targets: [
+
         .target(
-            name: "Finite",
+            name: "Finite Primitive",
             dependencies: []
         ),
+
         .target(
-            name: "Finite Standard Library Integration",
-            dependencies: ["Finite"]
-        ),
-        .target(
-            name: "Finite Apple Foundation Integration",
+            name: "Finite Capacity",
             dependencies: [
-                "Finite",
-                "Finite Standard Library Integration",
+                "Finite Primitive",
+                .product(name: "Cardinal", package: "swift-cardinal"),
             ]
         ),
+        .target(
+            name: "Finite Enumerable",
+            dependencies: [
+                "Finite Primitive",
+                "Finite Capacity",
+                .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Ordinal", package: "swift-ordinal"),
+                .product(name: "Index", package: "swift-index"),
+                .product(name: "Tagged", package: "swift-tagged"),
+                .product(name: "Iterator Primitive", package: "swift-iterator"),
+                .product(name: "Iterator Protocol", package: "swift-iterator"),
+            ]
+        ),
+        .target(
+            name: "Finite Bounded",
+            dependencies: [
+                "Finite Primitive",
+                "Finite Capacity",
+                .product(name: "Ordinal", package: "swift-ordinal"),
+                .product(name: "Tagged", package: "swift-tagged"),
+                .product(name: "Index", package: "swift-index"),
+            ]
+        ),
+
+        .target(
+            name: "Finite",
+            dependencies: [
+                "Finite Primitive",
+                "Finite Capacity",
+                "Finite Enumerable",
+                "Finite Bounded",
+            ]
+        ),
+
+        .target(
+            name: "Finite Test Support",
+            dependencies: [
+                "Finite",
+                .product(name: "Index Test Support", package: "swift-index"),
+            ],
+            path: "Tests/Support"
+        ),
+
         .testTarget(
             name: "Finite Tests",
-            dependencies: ["Finite"],
-            path: "Tests/Finite Tests"
+            dependencies: [
+                "Finite",
+                "Finite Test Support",
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]
