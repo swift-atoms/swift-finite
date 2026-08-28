@@ -1,13 +1,15 @@
-import Cardinal
+public import Cardinal
 public import Finite
-import Index
+public import Index
 public import Iterator
 public import Iterator_Protocol
-import Ordinal
+public import Ordinal
+public import Ordinal_Comparison
+public import Tagged
 
-extension Finite {
+extension Finite::Finite {
 
-    public struct Enumeration<Element: Finite.Enumerable>: Swift.Sequence, Sendable {
+    public struct Enumeration<Element: Finite::Finite.Enumerable>: Swift.Sequence, Sendable {
 
         @inlinable
         public init() {}
@@ -17,91 +19,93 @@ extension Finite {
             Iterator()
         }
 
-        public struct Iterator: Iterator.Iterator.`Protocol`, IteratorProtocol, Sendable {
+        public struct Iterator: Iterator::Iterator.`Protocol`, IteratorProtocol, Sendable {
             @usableFromInline
-            var index: Ordinal.Ordinal = .zero
+            var index: Ordinal::Ordinal = .zero
 
             @inlinable
             package init() {}
 
             @inlinable
             public mutating func next() -> Element? {
-                guard index < Element.count else { return nil }
-                defer { index += Cardinal.one }
+                guard index.rawValue < Element.count.rawValue else { return nil }
+                defer { index = Ordinal::Ordinal(index.rawValue + 1) }
                 return Element(_unchecked: (), ordinal: index)
             }
         }
     }
 }
 
-extension Finite.Enumeration {
+extension Finite::Finite.Enumeration {
 
     @inlinable
     public func element(at position: Int) -> Element? {
-        guard let ordinal = Ordinal.Ordinal(exactly: position) else { return nil }
-        return Element(ordinal)
+        guard position >= 0 else { return nil }
+        return Element(Ordinal::Ordinal(UInt(position)))
     }
 }
 
-extension Finite.Enumeration: Swift.Collection {
+extension Finite::Finite.Enumeration: Swift.Collection {
 
-    public typealias Index = Index.Index<Element>
-
-    @inlinable
-    public var startIndex: Index { .zero }
+    public typealias Index = Index::Index<Element>
 
     @inlinable
-    public var endIndex: Index { Index.Count(Element.count).map(Ordinal.init) }
+    public var startIndex: Index { Index(_unchecked: .zero) }
+
+    @inlinable
+    public var endIndex: Index {
+        Index(_unchecked: Ordinal::Ordinal(Element.count.rawValue))
+    }
 
     @inlinable
     public subscript(position: Index) -> Element {
-        Element(_unchecked: (), ordinal: position.position)
+        Element(_unchecked: (), ordinal: position.underlying)
     }
 
     @inlinable
     public func index(after i: Index) -> Index {
-        i + Index.Count(Cardinal.one)
+        Index(_unchecked: Ordinal::Ordinal(i.underlying.rawValue + 1))
     }
 }
 
-extension Finite.Enumeration: BidirectionalCollection {
+extension Finite::Finite.Enumeration: BidirectionalCollection {
 
     @inlinable
     public func index(before i: Index) -> Index {
-
-        try! i.predecessor.exact()
+        precondition(i.underlying.rawValue > 0)
+        return Index(_unchecked: Ordinal::Ordinal(i.underlying.rawValue - 1))
     }
 }
 
-extension Finite.Enumeration: RandomAccessCollection {
+extension Finite::Finite.Enumeration: RandomAccessCollection {
 
     @inlinable
-    public var count: Int { Int(clamping: Element.count) }
+    public var count: Int { Int(clamping: Element.count.rawValue) }
 
     @inlinable
     public func distance(from start: Index, to end: Index) -> Int {
-        let endPosition = Int(bitPattern: end)
-        let startPosition = Int(bitPattern: start)
+        let endPosition = Int(bitPattern: end.underlying.rawValue)
+        let startPosition = Int(bitPattern: start.underlying.rawValue)
         return endPosition - startPosition
     }
 
     @inlinable
     public func index(_ i: Index, offsetBy distance: Int) -> Index {
-        let position = Int(bitPattern: i)
+        let position = Int(bitPattern: i.underlying.rawValue)
         let offsetPosition = position + distance
-        return Index(_unchecked: Ordinal(UInt(bitPattern: offsetPosition)))
+        return Index(_unchecked: Ordinal::Ordinal(UInt(bitPattern: offsetPosition)))
     }
 
     @inlinable
     public func index(_ i: Index, offsetBy distance: Int, limitedBy limit: Index) -> Index? {
-        let position = Int(bitPattern: i)
+        let position = Int(bitPattern: i.underlying.rawValue)
         let result = position + distance
-        let limitPosition = Int(bitPattern: limit)
+        let limitPosition = Int(bitPattern: limit.underlying.rawValue)
         guard distance >= 0 else {
             return result >= limitPosition
-                ? Index(_unchecked: Ordinal(UInt(bitPattern: result))) : nil
+                ? Index(_unchecked: Ordinal::Ordinal(UInt(bitPattern: result))) : nil
         }
         return result <= limitPosition
-            ? Index(_unchecked: Ordinal(UInt(bitPattern: result))) : nil
+            ? Index(_unchecked: Ordinal::Ordinal(UInt(bitPattern: result))) : nil
     }
 }

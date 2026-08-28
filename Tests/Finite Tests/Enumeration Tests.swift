@@ -1,4 +1,18 @@
+import Cardinal
+import Cardinal_Standard_Library_Integration
+import Finite_Bounded
+import Finite_Enumerable
 import Finite_Test_Support
+import Index
+import Ordinal
+import Ordinal_Cardinal
+import Ordinal_Comparison
+import Ordinal_Equation
+import Ordinal_Hash
+import Ordinal_Standard_Library_Integration
+import Ordinal_Tagged
+import Tagged
+import Tagged_Standard_Library_Integration
 import Testing
 
 @testable import Finite

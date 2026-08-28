@@ -1,8 +1,9 @@
 public import Finite
-import Ordinal
-import Tagged
+public import Ordinal
+public import Tagged
 
-extension Ordinal {
+extension Ordinal::Ordinal {
 
-    public typealias Finite<let N: Int> = Tagged<Finite.Finite.Bound<N>, Ordinal>
+    public typealias Finite<let N: Int> =
+        Tagged::Tagged<Finite::Finite.Bound<N>, Ordinal::Ordinal>
 }

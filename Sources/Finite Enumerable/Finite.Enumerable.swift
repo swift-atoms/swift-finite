@@ -1,32 +1,32 @@
-import Cardinal
+public import Cardinal
 public import Finite
-import Ordinal
+public import Ordinal
 
-extension Finite {
+extension Finite::Finite {
 
     public protocol Enumerable: CaseIterable, Sendable {
 
-        static var count: Cardinal { get }
+        static var count: Cardinal::Cardinal { get }
 
-        var ordinal: Ordinal.Ordinal { get }
+        var ordinal: Ordinal::Ordinal { get }
 
-        init(_unchecked: Void, ordinal: Ordinal.Ordinal)
+        init(_unchecked: Void, ordinal: Ordinal::Ordinal)
     }
 }
 
-extension Finite.Enumerable {
+extension Finite::Finite.Enumerable {
 
     @inlinable
-    public static var allCases: Finite.Enumeration<Self> {
-        Finite.Enumeration()
+    public static var allCases: Finite::Finite.Enumeration<Self> {
+        Finite::Finite.Enumeration()
     }
 }
 
-extension Finite.Enumerable {
+extension Finite::Finite.Enumerable {
 
     @inlinable
-    public init?(_ ordinal: Ordinal) {
-        guard ordinal < Self.count else { return nil }
+    public init?(_ ordinal: Ordinal::Ordinal) {
+        guard ordinal.rawValue < Self.count.rawValue else { return nil }
         self.init(_unchecked: (), ordinal: ordinal)
     }
 }

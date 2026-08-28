@@ -1,4 +1,4 @@
-# Finite Primitives
+# Finite
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 [![CI](https://github.com/swift-atoms/swift-finite/actions/workflows/ci.yml/badge.svg)](https://github.com/swift-atoms/swift-finite/actions/workflows/ci.yml)
@@ -21,29 +21,32 @@ The bound `N` lives in the type, so an out-of-range value can't be constructed e
 ## Quick Start
 
 ```swift
-import Finite
+import Finite_Bounded
+import Finite_Enumerable
+import Index
+import Ordinal
 
 // A value provably in 0..<8:
-let three: Ordinal.Finite<8> = 3
-Ordinal.Finite<8>.count          // 8
+let three: Ordinal::Ordinal.Finite<8> = .init(3)!
+Ordinal::Ordinal.Finite<8>.count          // 8
 three.ordinal                    // 3
 
 // Construction is failable — an out-of-range value can't sneak in:
-Ordinal.Finite<8>(7)             // Optional(7)
-Ordinal.Finite<8>(8)             // nil
+Ordinal::Ordinal.Finite<8>(7)             // Optional(7)
+Ordinal::Ordinal.Finite<8>(8)             // nil
 
 // Every case, as a RandomAccessCollection:
-Ordinal.Finite<5>.allCases.count // 5
+Ordinal::Ordinal.Finite<5>.allCases.count // 5
 ```
 
 A bounds-checked index narrows a plain `Index` to a capacity — same layout, checked construction:
 
 ```swift
-let i: Index<Int> = 5
-Index<Int>.Bounded<8>(i)         // Optional — 5 fits in 0..<8
+let i: Index::Index<Int> = .init(_unchecked: Ordinal::Ordinal(5))
+Index::Index<Int>.Bounded<8>(i)  // Optional — 5 fits in 0..<8
 
-let j: Index<Int> = 9
-Index<Int>.Bounded<8>(j)         // nil — out of bounds
+let j: Index::Index<Int> = .init(_unchecked: Ordinal::Ordinal(9))
+Index::Index<Int>.Bounded<8>(j)  // nil — out of bounds
 ```
 
 ---
@@ -58,18 +61,19 @@ dependencies: [
 ]
 ```
 
-Add the umbrella product to your target:
+Add the focused products your target uses:
 
 ```swift
 .target(
     name: "App",
     dependencies: [
-        .product(name: "Finite", package: "swift-finite")
+        .product(name: "Finite Bounded", package: "swift-finite"),
+        .product(name: "Finite Enumerable", package: "swift-finite"),
     ]
 )
 ```
 
-Or depend on a narrower product (e.g. `Finite Bounded Primitives` for just the bounded types) — see Architecture.
+The `Finite` product contains only the canonical namespace and its intrinsic `Bound` tag.
 
 Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 (or the corresponding Linux / Windows toolchain).
 
@@ -79,11 +83,10 @@ Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 
 
 | Product | Contents | When to import |
 |---------|----------|----------------|
-| `Finite Primitives` | Umbrella — re-exports all of the below | Most consumers |
-| `Finite Bounded Primitives` | `Ordinal.Finite<N>` and `Index<Element>.Bounded<N>` | Bounded values and indices |
-| `Finite Enumerable Primitives` | `Finite.Enumerable`, `Finite.Enumeration`, and the finite-enumerable conformances | Finite enumerable types + `.allCases` |
-| `Finite Capacity Primitives` | `Finite.Capacity` | Bounded capacities |
-| `Finite Primitive` | The bare `Finite` namespace enum | Namespace only (rare) |
+| `Finite` | The canonical `Finite` namespace and intrinsic `Bound` tag | Defining new finite-domain integrations |
+| `Finite Bounded` | `Ordinal.Finite<N>` and `Index<Element>.Bounded<N>` | Bounded values and indices |
+| `Finite Enumerable` | `Finite.Enumerable`, `Finite.Enumeration`, and finite-enumerable conformances | Finite enumerable types + typed `.allCases` |
+| `Finite Capacity` | `Finite.Capacity` | Bounded capacities |
 | `Finite Test Support` | Re-exports for downstream test targets | Test target only |
 
 ---
