@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-finite-primitives",
+    name: "swift-finite",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -14,117 +14,102 @@ let package = Package(
     products: [
 
         .library(
-            name: "Finite Primitive",
-            targets: ["Finite Primitive"]
+            name: "Finite Capacity",
+            targets: ["Finite Capacity"]
+        ),
+        .library(
+            name: "Finite Enumerable",
+            targets: ["Finite Enumerable"]
+        ),
+        .library(
+            name: "Finite Bounded",
+            targets: ["Finite Bounded"]
         ),
 
         .library(
-            name: "Finite Capacity Primitives",
-            targets: ["Finite Capacity Primitives"]
-        ),
-        .library(
-            name: "Finite Enumerable Primitives",
-            targets: ["Finite Enumerable Primitives"]
-        ),
-        .library(
-            name: "Finite Bounded Primitives",
-            targets: ["Finite Bounded Primitives"]
+            name: "Finite",
+            targets: ["Finite"]
         ),
 
         .library(
-            name: "Finite Primitives",
-            targets: ["Finite Primitives"]
-        ),
-
-        .library(
-            name: "Finite Primitives Test Support",
-            targets: ["Finite Primitives Test Support"]
+            name: "Finite Test Support",
+            targets: ["Finite Test Support"]
         ),
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-cardinal-primitives.git",
+            url: "https://github.com/swift-atoms/swift-cardinal.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-ordinal-primitives.git",
+            url: "https://github.com/swift-atoms/swift-ordinal.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-tagged-primitives.git",
+            url: "https://github.com/swift-atoms/swift-tagged.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-index-primitives.git",
+            url: "https://github.com/swift-atoms/swift-index.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-iterator-primitives.git",
+            url: "https://github.com/swift-atoms/swift-iterator.git",
             branch: "main"
         ),
     ],
     targets: [
 
         .target(
-            name: "Finite Primitive",
+            name: "Finite",
             dependencies: []
         ),
 
         .target(
-            name: "Finite Capacity Primitives",
+            name: "Finite Capacity",
             dependencies: [
-                "Finite Primitive",
-                .product(name: "Cardinal Primitives", package: "swift-cardinal-primitives"),
+                .target(name: "Finite"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
             ]
         ),
         .target(
-            name: "Finite Enumerable Primitives",
+            name: "Finite Enumerable",
             dependencies: [
-                "Finite Primitive",
-                "Finite Capacity Primitives",
-                .product(name: "Cardinal Primitives", package: "swift-cardinal-primitives"),
-                .product(name: "Ordinal Primitives", package: "swift-ordinal-primitives"),
-                .product(name: "Index Primitives", package: "swift-index-primitives"),
-                .product(name: "Tagged Primitives", package: "swift-tagged-primitives"),
-                .product(name: "Iterator Primitive", package: "swift-iterator-primitives"),
-                .product(name: "Iterator Protocol", package: "swift-iterator-primitives"),
+                .target(name: "Finite"),
+                .target(name: "Finite Capacity"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Ordinal", package: "swift-ordinal"),
+                .product(name: "Index", package: "swift-index"),
+                .product(name: "Tagged", package: "swift-tagged"),
+                .product(name: "Iterator", package: "swift-iterator"),
+                .product(name: "Iterator Protocol", package: "swift-iterator"),
             ]
         ),
         .target(
-            name: "Finite Bounded Primitives",
+            name: "Finite Bounded",
             dependencies: [
-                "Finite Primitive",
-                "Finite Capacity Primitives",
-                .product(name: "Ordinal Primitives", package: "swift-ordinal-primitives"),
-                .product(name: "Tagged Primitives", package: "swift-tagged-primitives"),
-                .product(name: "Index Primitives", package: "swift-index-primitives"),
-            ]
-        ),
-
-        .target(
-            name: "Finite Primitives",
-            dependencies: [
-                "Finite Primitive",
-                "Finite Capacity Primitives",
-                "Finite Enumerable Primitives",
-                "Finite Bounded Primitives",
+                .target(name: "Finite"),
+                .target(name: "Finite Capacity"),
+                .product(name: "Ordinal", package: "swift-ordinal"),
+                .product(name: "Tagged", package: "swift-tagged"),
+                .product(name: "Index", package: "swift-index"),
             ]
         ),
 
         .target(
-            name: "Finite Primitives Test Support",
+            name: "Finite Test Support",
             dependencies: [
-                "Finite Primitives",
-                .product(name: "Index Primitives Test Support", package: "swift-index-primitives"),
+                .target(name: "Finite"),
+                .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
         ),
 
         .testTarget(
-            name: "Finite Primitives Tests",
+            name: "Finite Tests",
             dependencies: [
-                "Finite Primitives",
-                "Finite Primitives Test Support",
+                .target(name: "Finite"),
+                .target(name: "Finite Test Support"),
             ]
         ),
     ],

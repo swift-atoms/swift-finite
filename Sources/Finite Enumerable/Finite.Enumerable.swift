@@ -1,6 +1,6 @@
-import Cardinal_Primitives
-public import Finite_Primitive
-import Ordinal_Primitives
+import Cardinal
+public import Finite
+import Ordinal
 
 extension Finite {
 
@@ -8,9 +8,9 @@ extension Finite {
 
         static var count: Cardinal { get }
 
-        var ordinal: Ordinal_Primitives.Ordinal { get }
+        var ordinal: Ordinal.Ordinal { get }
 
-        init(_unchecked: Void, ordinal: Ordinal_Primitives.Ordinal)
+        init(_unchecked: Void, ordinal: Ordinal.Ordinal)
     }
 }
 

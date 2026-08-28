@@ -1,9 +1,9 @@
-import Cardinal_Primitives
-public import Finite_Primitive
-import Index_Primitives
-public import Iterator_Primitive
+import Cardinal
+public import Finite
+import Index
+public import Iterator
 public import Iterator_Protocol
-import Ordinal_Primitives
+import Ordinal
 
 extension Finite {
 
@@ -17,9 +17,9 @@ extension Finite {
             Iterator()
         }
 
-        public struct Iterator: Iterator_Primitive.Iterator.`Protocol`, IteratorProtocol, Sendable {
+        public struct Iterator: Iterator.Iterator.`Protocol`, IteratorProtocol, Sendable {
             @usableFromInline
-            var index: Ordinal_Primitives.Ordinal = .zero
+            var index: Ordinal.Ordinal = .zero
 
             @inlinable
             package init() {}
@@ -38,14 +38,14 @@ extension Finite.Enumeration {
 
     @inlinable
     public func element(at position: Int) -> Element? {
-        guard let ordinal = Ordinal_Primitives.Ordinal(exactly: position) else { return nil }
+        guard let ordinal = Ordinal.Ordinal(exactly: position) else { return nil }
         return Element(ordinal)
     }
 }
 
 extension Finite.Enumeration: Swift.Collection {
 
-    public typealias Index = Index_Primitives.Index<Element>
+    public typealias Index = Index.Index<Element>
 
     @inlinable
     public var startIndex: Index { .zero }

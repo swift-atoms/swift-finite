@@ -1,5 +1,5 @@
-import Cardinal_Primitives
-public import Finite_Primitive
+import Cardinal
+public import Finite
 
 extension Finite {
 

@@ -1,8 +1,8 @@
-import Cardinal_Primitives
-public import Finite_Capacity_Primitives
-public import Finite_Primitive
-import Ordinal_Primitives
-import Tagged_Primitives
+import Cardinal
+public import Finite_Capacity
+public import Finite
+import Ordinal
+import Tagged
 
 extension Tagged: @retroactive CaseIterable where Tag: Finite.Capacity, Underlying == Ordinal {}
 
