@@ -1,5 +1,5 @@
 import Finite_Capacity
-public import Finite_Primitive
+public import Finite
 import Ordinal
 import Tagged
 

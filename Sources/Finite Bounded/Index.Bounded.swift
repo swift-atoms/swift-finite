@@ -1,4 +1,4 @@
-public import Finite_Primitive
+public import Finite
 import Index
 import Ordinal
 import Tagged

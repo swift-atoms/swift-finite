@@ -14,11 +14,6 @@ let package = Package(
     products: [
 
         .library(
-            name: "Finite Primitive",
-            targets: ["Finite Primitive"]
-        ),
-
-        .library(
             name: "Finite Capacity",
             targets: ["Finite Capacity"]
         ),
@@ -43,58 +38,58 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-molecules/swift-cardinal.git",
+            url: "https://github.com/swift-atoms/swift-cardinal.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-ordinal.git",
+            url: "https://github.com/swift-atoms/swift-ordinal.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-tagged.git",
+            url: "https://github.com/swift-atoms/swift-tagged.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-index.git",
+            url: "https://github.com/swift-atoms/swift-index.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-iterator.git",
+            url: "https://github.com/swift-atoms/swift-iterator.git",
             branch: "main"
         ),
     ],
     targets: [
 
         .target(
-            name: "Finite Primitive",
+            name: "Finite",
             dependencies: []
         ),
 
         .target(
             name: "Finite Capacity",
             dependencies: [
-                "Finite Primitive",
+                .target(name: "Finite"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
             ]
         ),
         .target(
             name: "Finite Enumerable",
             dependencies: [
-                "Finite Primitive",
-                "Finite Capacity",
+                .target(name: "Finite"),
+                .target(name: "Finite Capacity"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Tagged", package: "swift-tagged"),
-                .product(name: "Iterator Primitive", package: "swift-iterator"),
+                .product(name: "Iterator", package: "swift-iterator"),
                 .product(name: "Iterator Protocol", package: "swift-iterator"),
             ]
         ),
         .target(
             name: "Finite Bounded",
             dependencies: [
-                "Finite Primitive",
-                "Finite Capacity",
+                .target(name: "Finite"),
+                .target(name: "Finite Capacity"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Index", package: "swift-index"),
@@ -102,19 +97,9 @@ let package = Package(
         ),
 
         .target(
-            name: "Finite",
-            dependencies: [
-                "Finite Primitive",
-                "Finite Capacity",
-                "Finite Enumerable",
-                "Finite Bounded",
-            ]
-        ),
-
-        .target(
             name: "Finite Test Support",
             dependencies: [
-                "Finite",
+                .target(name: "Finite"),
                 .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
@@ -123,8 +108,8 @@ let package = Package(
         .testTarget(
             name: "Finite Tests",
             dependencies: [
-                "Finite",
-                "Finite Test Support",
+                .target(name: "Finite"),
+                .target(name: "Finite Test Support"),
             ]
         ),
     ],

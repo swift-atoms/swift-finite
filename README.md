@@ -1,7 +1,7 @@
-# Finite
+# Finite Primitives
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
-[![CI](https://github.com/swift-molecules/swift-finite/actions/workflows/ci.yml/badge.svg)](https://github.com/swift-molecules/swift-finite/actions/workflows/ci.yml)
+[![CI](https://github.com/swift-atoms/swift-finite/actions/workflows/ci.yml/badge.svg)](https://github.com/swift-atoms/swift-finite/actions/workflows/ci.yml)
 
 Compile-time-bounded finite types: `Ordinal.Finite<N>` — a value provably in `0..<N` — `Index<Element>.Bounded<N>` — a bounds-checked index — and `Finite.Enumerable`, the protocol for types with a known, finite set of cases and a typed `.allCases`.
 
@@ -54,7 +54,7 @@ Add the dependency to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-molecules/swift-finite.git", branch: "main")
+    .package(url: "https://github.com/swift-atoms/swift-finite.git", branch: "main")
 ]
 ```
 
@@ -69,7 +69,7 @@ Add the umbrella product to your target:
 )
 ```
 
-Or depend on a narrower product (e.g. `Finite Bounded` for just the bounded types) — see Architecture.
+Or depend on a narrower product (e.g. `Finite Bounded Primitives` for just the bounded types) — see Architecture.
 
 Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 (or the corresponding Linux / Windows toolchain).
 
@@ -79,10 +79,10 @@ Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 
 
 | Product | Contents | When to import |
 |---------|----------|----------------|
-| `Finite` | Umbrella — re-exports all of the below | Most consumers |
-| `Finite Bounded` | `Ordinal.Finite<N>` and `Index<Element>.Bounded<N>` | Bounded values and indices |
-| `Finite Enumerable` | `Finite.Enumerable`, `Finite.Enumeration`, and the finite-enumerable conformances | Finite enumerable types + `.allCases` |
-| `Finite Capacity` | `Finite.Capacity` | Bounded capacities |
+| `Finite Primitives` | Umbrella — re-exports all of the below | Most consumers |
+| `Finite Bounded Primitives` | `Ordinal.Finite<N>` and `Index<Element>.Bounded<N>` | Bounded values and indices |
+| `Finite Enumerable Primitives` | `Finite.Enumerable`, `Finite.Enumeration`, and the finite-enumerable conformances | Finite enumerable types + `.allCases` |
+| `Finite Capacity Primitives` | `Finite.Capacity` | Bounded capacities |
 | `Finite Primitive` | The bare `Finite` namespace enum | Namespace only (rare) |
 | `Finite Test Support` | Re-exports for downstream test targets | Test target only |
 
@@ -102,11 +102,11 @@ Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 
 
 ## Related Packages
 
-- [`swift-ordinal`](https://github.com/swift-molecules/swift-ordinal) — `Ordinal`, which `Ordinal.Finite` bounds.
-- [`swift-index`](https://github.com/swift-molecules/swift-index) — `Index<T>`, which `.Bounded` narrows.
-- [`swift-tagged`](https://github.com/swift-molecules/swift-tagged) — `Tagged`, the zero-overhead wrapper behind `Index.Bounded`.
-- [`swift-cardinal`](https://github.com/swift-molecules/swift-cardinal) — `Cardinal`, the count type behind `Finite.Capacity`.
-- [`swift-iterator`](https://github.com/swift-molecules/swift-iterator) — `Iterator`, backing the `Finite.Enumeration` collection.
+- [`swift-ordinal`](https://github.com/swift-atoms/swift-ordinal) — `Ordinal`, which `Ordinal.Finite` bounds.
+- [`swift-index`](https://github.com/swift-atoms/swift-index) — `Index<T>`, which `.Bounded` narrows.
+- [`swift-tagged`](https://github.com/swift-atoms/swift-tagged) — `Tagged`, the zero-overhead wrapper behind `Index.Bounded`.
+- [`swift-cardinal`](https://github.com/swift-atoms/swift-cardinal) — `Cardinal`, the count type behind `Finite.Capacity`.
+- [`swift-iterator`](https://github.com/swift-atoms/swift-iterator) — `Iterator`, backing the `Finite.Enumeration` collection.
 
 ---
 

@@ -1,7 +1,7 @@
 import Cardinal
-public import Finite_Primitive
+public import Finite
 import Index
-public import Iterator_Primitive
+public import Iterator
 public import Iterator_Protocol
 import Ordinal
 
@@ -17,7 +17,7 @@ extension Finite {
             Iterator()
         }
 
-        public struct Iterator: Iterator_Primitive.Iterator.`Protocol`, IteratorProtocol, Sendable {
+        public struct Iterator: Iterator.Iterator.`Protocol`, IteratorProtocol, Sendable {
             @usableFromInline
             var index: Ordinal.Ordinal = .zero
 
