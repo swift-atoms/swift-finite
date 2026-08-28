@@ -1,21 +1,23 @@
-import Cardinal
+public import Cardinal
 public import Finite_Capacity
 public import Finite
-import Ordinal
-import Tagged
+public import Ordinal
+public import Tagged
 
-extension Tagged: @retroactive CaseIterable where Tag: Finite.Capacity, Underlying == Ordinal {}
+extension Tagged::Tagged: @retroactive CaseIterable
+where Tag: Finite::Finite.Capacity, Underlying == Ordinal::Ordinal {}
 
-extension Tagged: Finite.Enumerable where Tag: Finite.Capacity, Underlying == Ordinal {
-
-    @inlinable
-    public static var count: Cardinal { Tag.capacity }
-
-    @inlinable
-    public var ordinal: Ordinal { underlying }
+extension Tagged::Tagged: Finite::Finite.Enumerable
+where Tag: Finite::Finite.Capacity, Underlying == Ordinal::Ordinal {
 
     @inlinable
-    public init(_unchecked: Void, ordinal: Ordinal) {
+    public static var count: Cardinal::Cardinal { Tag.capacity }
+
+    @inlinable
+    public var ordinal: Ordinal::Ordinal { underlying }
+
+    @inlinable
+    public init(_unchecked: Void, ordinal: Ordinal::Ordinal) {
         self.init(_unchecked: ordinal)
     }
 }

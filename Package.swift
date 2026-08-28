@@ -79,6 +79,7 @@ let package = Package(
                 .target(name: "Finite Capacity"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
+                .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Iterator", package: "swift-iterator"),
@@ -90,9 +91,9 @@ let package = Package(
             dependencies: [
                 .target(name: "Finite"),
                 .target(name: "Finite Capacity"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
-                .product(name: "Index", package: "swift-index"),
             ]
         ),
 
@@ -109,7 +110,31 @@ let package = Package(
             name: "Finite Tests",
             dependencies: [
                 .target(name: "Finite"),
+                .target(name: "Finite Capacity"),
+                .target(name: "Finite Enumerable"),
+                .target(name: "Finite Bounded"),
                 .target(name: "Finite Test Support"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(
+                    name: "Cardinal Standard Library Integration",
+                    package: "swift-cardinal"
+                ),
+                .product(name: "Index", package: "swift-index"),
+                .product(name: "Ordinal", package: "swift-ordinal"),
+                .product(name: "Ordinal Cardinal", package: "swift-ordinal"),
+                .product(name: "Ordinal Comparison", package: "swift-ordinal"),
+                .product(name: "Ordinal Equation", package: "swift-ordinal"),
+                .product(name: "Ordinal Hash", package: "swift-ordinal"),
+                .product(
+                    name: "Ordinal Standard Library Integration",
+                    package: "swift-ordinal"
+                ),
+                .product(name: "Ordinal Tagged", package: "swift-ordinal"),
+                .product(name: "Tagged", package: "swift-tagged"),
+                .product(
+                    name: "Tagged Standard Library Integration",
+                    package: "swift-tagged"
+                ),
             ]
         ),
     ],

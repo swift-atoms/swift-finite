@@ -1,27 +1,31 @@
 public import Finite
-import Index
-import Ordinal
-import Tagged
+public import Ordinal
+public import Tagged
 
-extension Tagged where Underlying == Ordinal, Tag: ~Copyable & ~Escapable {
+extension Tagged::Tagged
+where Underlying == Ordinal::Ordinal, Tag: ~Copyable & ~Escapable {
 
-    public typealias Bounded<let N: Int> = Tagged<Tag, Ordinal.Finite<N>>
+    public typealias Bounded<let N: Int> =
+        Tagged::Tagged<Tag, Ordinal::Ordinal.Finite<N>>
 }
 
-extension Tagged where Tag: ~Copyable & ~Escapable {
+extension Tagged::Tagged where Tag: ~Copyable & ~Escapable {
 
     @inlinable
-    public init?<let N: Int>(_ index: Tagged<Tag, Ordinal>)
-    where Underlying == Tagged<Finite.Bound<N>, Ordinal> {
-        guard let finite = Ordinal.Finite<N>(index.underlying) else { return nil }
+    public init?<let N: Int>(_ index: Tagged::Tagged<Tag, Ordinal::Ordinal>)
+    where Underlying == Tagged::Tagged<Finite::Finite.Bound<N>, Ordinal::Ordinal> {
+        guard let finite = Ordinal::Ordinal.Finite<N>(index.underlying) else { return nil }
         self.init(_unchecked: finite)
     }
 }
 
-extension Tagged where Underlying == Ordinal, Tag: ~Copyable & ~Escapable {
+extension Tagged::Tagged
+where Underlying == Ordinal::Ordinal, Tag: ~Copyable & ~Escapable {
 
     @inlinable
-    public init<let N: Int>(_ bounded: Tagged<Tag, Ordinal.Finite<N>>) {
+    public init<let N: Int>(
+        _ bounded: Tagged::Tagged<Tag, Ordinal::Ordinal.Finite<N>>
+    ) {
         self = bounded.map { $0.underlying }
     }
 }

@@ -1,16 +1,16 @@
-import Cardinal
+public import Cardinal
 public import Finite
 
-extension Finite {
+extension Finite::Finite {
 
     public protocol Capacity: Sendable {
 
-        static var capacity: Cardinal { get }
+        static var capacity: Cardinal::Cardinal { get }
     }
 }
 
-extension Finite.Bound: Finite.Capacity {
+extension Finite::Finite.Bound: Finite::Finite.Capacity {
 
     @inlinable
-    public static var capacity: Cardinal { Cardinal(UInt(N)) }
+    public static var capacity: Cardinal::Cardinal { Cardinal::Cardinal(UInt(N)) }
 }
