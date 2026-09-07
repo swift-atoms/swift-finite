@@ -19,6 +19,10 @@ let package = Package(
     ],
     dependencies: [
         .package(
+            url: "https://github.com/swift-atoms/swift-difference.git",
+            branch: "main"
+        ),
+        .package(
             url: "https://github.com/swift-atoms/swift-cardinal.git",
             branch: "main"
         ),
@@ -43,6 +47,7 @@ let package = Package(
         .target(
             name: "Finite",
             dependencies: [
+                .product(name: "Difference", package: "swift-difference"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Index", package: "swift-index"),

@@ -18,11 +18,13 @@ extension Finite::Finite.Enumeration: Swift.Collection {
 
     @inlinable
     public subscript(position: Index) -> Element {
-        Element(_unchecked: (), ordinal: position.underlying)
+        precondition(position.underlying.rawValue < Element.count.rawValue, "Index lies outside the enumeration")
+        return Element(_unchecked: (), ordinal: position.underlying)
     }
 
     @inlinable
     public func index(after i: Index) -> Index {
-        Index(_unchecked: Ordinal::Ordinal(i.underlying.rawValue + 1))
+        precondition(i.underlying.rawValue < Element.count.rawValue, "Cannot advance past the enumeration end")
+        return Index(_unchecked: Ordinal::Ordinal(i.underlying.rawValue + 1))
     }
 }

@@ -8,7 +8,10 @@ extension Finite::Finite.Enumeration: Swift.BidirectionalCollection {
 
     @inlinable
     public func index(before i: Index) -> Index {
-        precondition(i.underlying.rawValue > 0)
+        precondition(
+            i.underlying.rawValue > 0 && i.underlying.rawValue <= Element.count.rawValue,
+            "Cannot retreat from this enumeration index"
+        )
         return Index(_unchecked: Ordinal::Ordinal(i.underlying.rawValue - 1))
     }
 }
