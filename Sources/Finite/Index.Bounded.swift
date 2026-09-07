@@ -1,4 +1,3 @@
-public import Finite
 public import Ordinal
 public import Tagged
 

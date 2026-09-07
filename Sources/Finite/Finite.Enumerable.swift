@@ -1,5 +1,4 @@
 public import Cardinal
-public import Finite
 public import Ordinal
 
 extension Finite::Finite {

@@ -1,10 +1,7 @@
 public import Cardinal
-public import Finite
 public import Index
 public import Iterator
-public import Iterator_Protocol
 public import Ordinal
-public import Ordinal_Comparison
 public import Tagged
 
 extension Finite::Finite {

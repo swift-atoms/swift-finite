@@ -12,29 +12,10 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-
-        .library(
-            name: "Finite Capacity",
-            targets: ["Finite Capacity"]
-        ),
-        .library(
-            name: "Finite Enumerable",
-            targets: ["Finite Enumerable"]
-        ),
-        .library(
-            name: "Finite Bounded",
-            targets: ["Finite Bounded"]
-        ),
-
-        .library(
-            name: "Finite",
-            targets: ["Finite"]
-        ),
-
-        .library(
-            name: "Finite Test Support",
-            targets: ["Finite Test Support"]
-        ),
+        .library(name: "Finite", targets: ["Finite"]),
+        .library(name: "Finite Standard Library Integration", targets: ["Finite Standard Library Integration"]),
+        .library(name: "Finite Foundation Library Integration", targets: ["Finite Foundation Library Integration"]),
+        .library(name: "Finite Test Support", targets: ["Finite Test Support"]),
     ],
     dependencies: [
         .package(
@@ -59,44 +40,32 @@ let package = Package(
         ),
     ],
     targets: [
-
         .target(
             name: "Finite",
-            dependencies: []
-        ),
-
-        .target(
-            name: "Finite Capacity",
             dependencies: [
-                .target(name: "Finite"),
-                .product(name: "Cardinal", package: "swift-cardinal"),
-            ]
-        ),
-        .target(
-            name: "Finite Enumerable",
-            dependencies: [
-                .target(name: "Finite"),
-                .target(name: "Finite Capacity"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Iterator", package: "swift-iterator"),
-                .product(name: "Iterator Protocol", package: "swift-iterator"),
-            ]
+            ],
+            path: "Sources/Finite"
         ),
         .target(
-            name: "Finite Bounded",
+            name: "Finite Standard Library Integration",
             dependencies: [
                 .target(name: "Finite"),
-                .target(name: "Finite Capacity"),
-                .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Tagged", package: "swift-tagged"),
-            ]
+            ],
+            path: "Sources/Finite Standard Library Integration"
         ),
-
+        .target(
+            name: "Finite Foundation Library Integration",
+            dependencies: [
+                .target(name: "Finite"),
+                .target(name: "Finite Standard Library Integration"),
+            ],
+            path: "Sources/Finite Foundation Library Integration"
+        ),
         .target(
             name: "Finite Test Support",
             dependencies: [
@@ -105,44 +74,29 @@ let package = Package(
             ],
             path: "Tests/Support"
         ),
-
         .testTarget(
             name: "Finite Tests",
             dependencies: [
                 .target(name: "Finite"),
-                .target(name: "Finite Capacity"),
-                .target(name: "Finite Enumerable"),
-                .target(name: "Finite Bounded"),
                 .target(name: "Finite Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(
-                    name: "Cardinal Standard Library Integration",
-                    package: "swift-cardinal"
-                ),
+                .product(name: "Cardinal Standard Library Integration", package: "swift-cardinal"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Cardinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Comparison", package: "swift-ordinal"),
-                .product(name: "Ordinal Equation", package: "swift-ordinal"),
-                .product(name: "Ordinal Hash", package: "swift-ordinal"),
-                .product(
-                    name: "Ordinal Standard Library Integration",
-                    package: "swift-ordinal"
-                ),
-                .product(name: "Ordinal Tagged", package: "swift-ordinal"),
+                .product(name: "Ordinal Standard Library Integration", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
-                .product(
-                    name: "Tagged Standard Library Integration",
-                    package: "swift-tagged"
-                ),
-            ]
+                .product(name: "Tagged Standard Library Integration", package: "swift-tagged"),
+                .target(name: "Finite Standard Library Integration"),
+                .target(name: "Finite Foundation Library Integration"),
+            ],
+            path: "Tests/Finite Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
 )
 
-for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+for target in package.targets {
+    target.swiftSettings = [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
@@ -151,8 +105,4 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
     ]
-
-    let package: [SwiftSetting] = []
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }

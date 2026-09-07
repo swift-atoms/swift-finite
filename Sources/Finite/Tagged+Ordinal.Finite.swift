@@ -1,6 +1,4 @@
 public import Cardinal
-public import Finite_Capacity
-public import Finite
 public import Ordinal
 public import Tagged
 
