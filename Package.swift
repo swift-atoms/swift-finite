@@ -13,8 +13,8 @@ let package = Package(
     ],
     products: [
         .library(name: "Finite", targets: ["Finite"]),
-        .library(name: "Finite Standard Library Integration", targets: ["Finite Standard Library Integration"]),
-        .library(name: "Finite Foundation Library Integration", targets: ["Finite Foundation Library Integration"]),
+
+        .library(name: "Finite Foundation Integration", targets: ["Finite Foundation Integration"]),
         .library(name: "Finite Test Support", targets: ["Finite Test Support"]),
     ],
     dependencies: [
@@ -51,20 +51,13 @@ let package = Package(
             ],
             path: "Sources/Finite"
         ),
+        
         .target(
-            name: "Finite Standard Library Integration",
+            name: "Finite Foundation Integration",
             dependencies: [
                 .target(name: "Finite"),
             ],
-            path: "Sources/Finite Standard Library Integration"
-        ),
-        .target(
-            name: "Finite Foundation Library Integration",
-            dependencies: [
-                .target(name: "Finite"),
-                .target(name: "Finite Standard Library Integration"),
-            ],
-            path: "Sources/Finite Foundation Library Integration"
+            path: "Sources/Finite Foundation Integration"
         ),
         .target(
             name: "Finite Test Support",
@@ -80,14 +73,10 @@ let package = Package(
                 .target(name: "Finite"),
                 .target(name: "Finite Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(name: "Cardinal Standard Library Integration", package: "swift-cardinal"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Standard Library Integration", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
-                .product(name: "Tagged Standard Library Integration", package: "swift-tagged"),
-                .target(name: "Finite Standard Library Integration"),
-                .target(name: "Finite Foundation Library Integration"),
+                .target(name: "Finite Foundation Integration"),
             ],
             path: "Tests/Finite Tests"
         ),

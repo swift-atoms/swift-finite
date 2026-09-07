@@ -1,11 +1,8 @@
 import Cardinal
-import Cardinal_Standard_Library_Integration
 import Finite_Test_Support
 import Index
 import Ordinal
-import Ordinal_Standard_Library_Integration
 import Tagged
-import Tagged_Standard_Library_Integration
 import Testing
 
 @testable import Finite

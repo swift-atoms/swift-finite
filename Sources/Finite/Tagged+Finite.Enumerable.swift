@@ -2,9 +2,6 @@ public import Cardinal
 public import Ordinal
 public import Tagged
 
-extension Tagged::Tagged: @retroactive CaseIterable
-where Tag: Finite::Finite.Capacity, Underlying == Ordinal::Ordinal {}
-
 extension Tagged::Tagged: Finite::Finite.Enumerable
 where Tag: Finite::Finite.Capacity, Underlying == Ordinal::Ordinal {
 
