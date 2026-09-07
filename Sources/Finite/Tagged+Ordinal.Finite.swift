@@ -1,4 +1,5 @@
 public import Cardinal
+public import Difference
 public import Ordinal
 public import Tagged
 
@@ -64,20 +65,19 @@ extension Tagged::Tagged where Tag: ~Copyable & ~Escapable {
     @inlinable
     public func offset<let N: Int>(by delta: Int) -> Self?
     where Tag == Finite::Finite.Bound<N>, Underlying == Ordinal::Ordinal {
-        let current = Int(bitPattern: underlying.rawValue)
-        let result = current + delta
-        guard result >= 0, result < N else { return nil }
+        guard N > 0,
+            let result = try? underlying + Difference::Difference(delta),
+            result.rawValue < UInt(N)
+        else { return nil }
         return Self(_unchecked: result)
     }
 
     @inlinable
     public func clamped<let N: Int>(offsetBy delta: Int) -> Self
     where Tag == Finite::Finite.Bound<N>, Underlying == Ordinal::Ordinal {
-        let current = Int(bitPattern: underlying.rawValue)
-        let result = current + delta
-        if result < 0 { return Self(_unchecked: .zero) }
-        if result >= N { return Self(_unchecked: N - 1) }
-        return Self(_unchecked: result)
+        precondition(N > 0 && underlying.rawValue < UInt(N), "Clamping requires a valid bounded ordinal")
+        if let result = offset(by: delta) { return result }
+        return delta < 0 ? Self(_unchecked: .zero) : Self(_unchecked: N - 1)
     }
 }
 
@@ -128,8 +128,10 @@ extension Tagged::Tagged where Tag: ~Copyable & ~Escapable {
             column: Tagged::Tagged<Finite::Finite.Bound<Columns>, Ordinal::Ordinal>
         )?
     where Tag == Finite::Finite.Bound<N>, Underlying == Ordinal::Ordinal {
-        guard Rows * Columns == N else { return nil }
-        let position = Int(bitPattern: underlying.rawValue)
+        guard Rows > 0, Columns > 0 else { return nil }
+        let capacity = Rows.multipliedReportingOverflow(by: Columns)
+        guard !capacity.overflow, capacity.partialValue == N else { return nil }
+        let position = Int(underlying.rawValue)
         let row = position / Columns
         let column = position % Columns
         return (
@@ -148,9 +150,11 @@ extension Tagged::Tagged where Tag: ~Copyable & ~Escapable {
         column: Tagged::Tagged<Finite::Finite.Bound<Columns>, Ordinal::Ordinal>
     ) -> Self?
     where Tag == Finite::Finite.Bound<N>, Underlying == Ordinal::Ordinal {
-        guard Rows * Columns == N else { return nil }
-        let rowPosition = Int(bitPattern: row.underlying.rawValue)
-        let columnPosition = Int(bitPattern: column.underlying.rawValue)
+        guard Rows > 0, Columns > 0 else { return nil }
+        let capacity = Rows.multipliedReportingOverflow(by: Columns)
+        guard !capacity.overflow, capacity.partialValue == N else { return nil }
+        let rowPosition = Int(row.underlying.rawValue)
+        let columnPosition = Int(column.underlying.rawValue)
         let position = rowPosition * Columns + columnPosition
         return Self(_unchecked: position)
     }
