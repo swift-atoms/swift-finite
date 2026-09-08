@@ -107,14 +107,18 @@ extension Tagged::Tagged where Tag: ~Copyable & ~Escapable {
     public func injected<let N: Int, let M: Int>()
         -> Tagged::Tagged<Finite::Finite.Bound<M>, Ordinal::Ordinal>
     where Tag == Finite::Finite.Bound<N>, Underlying == Ordinal::Ordinal {
-        Tagged::Tagged<Finite::Finite.Bound<M>, Ordinal::Ordinal>(_unchecked: underlying)
+        precondition(
+            N > 0 && M >= N && underlying.rawValue < UInt(N),
+            "Injection requires a valid source ordinal and an equal or larger destination domain"
+        )
+        return Tagged::Tagged<Finite::Finite.Bound<M>, Ordinal::Ordinal>(_unchecked: underlying)
     }
 
     @inlinable
     public func projected<let N: Int, let M: Int>()
         -> Tagged::Tagged<Finite::Finite.Bound<M>, Ordinal::Ordinal>?
     where Tag == Finite::Finite.Bound<N>, Underlying == Ordinal::Ordinal {
-        guard underlying.rawValue < Finite::Finite.Bound<M>.capacity.rawValue else { return nil }
+        guard M > 0, underlying.rawValue < UInt(M) else { return nil }
         return Tagged::Tagged<Finite::Finite.Bound<M>, Ordinal::Ordinal>(_unchecked: underlying)
     }
 }
