@@ -1,7 +1,7 @@
 public import Cardinal
 public import Difference
-public import Index
-public import Iterator
+import Index
+import Iterator
 public import Ordinal
 public import Tagged
 

@@ -1,2 +1,2 @@
 @_exported public import Finite
-public import Foundation
+import Foundation

@@ -1,8 +1,8 @@
 public import Cardinal
-public import Index
+import Index
 public import Iterator
 public import Ordinal
-public import Tagged
+import Tagged
 
 extension Finite::Finite {
 

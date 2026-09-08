@@ -1,6 +1,6 @@
 public import Cardinal
 public import Index
-public import Iterator
+import Iterator
 public import Ordinal
 public import Tagged
 
