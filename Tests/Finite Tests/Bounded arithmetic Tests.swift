@@ -103,10 +103,10 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
     }
 
     @Test
-    func `An empty domain has no ordinal that clamping can return`() async {
+    func `Constructing an ordinal for an empty domain is rejected`() async {
         await withKnownIssue("Swift integer generic specialization collision: https://github.com/swiftlang/swift/issues/90739") {
             await #expect(processExitsWith: .failure) {
-                print(Ordinal.Finite<0>(_unchecked: Int(0)).clamped(offsetBy: 0).underlying.rawValue)
+                print(Ordinal.Finite<0>(_unchecked: Int(0)).underlying.rawValue)
             }
         } when: {
             !_isDebugAssertConfiguration()
@@ -127,9 +127,9 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
     }
 
     @Test
-    func `Clamping rejects a source ordinal outside its declared domain`() async {
+    func `The compatibility initializer rejects the upper bound of its domain`() async {
         await #expect(processExitsWith: .failure) {
-            print(Ordinal.Finite<2>(_unchecked: Int(2)).clamped(offsetBy: -1).underlying.rawValue)
+            print(Ordinal.Finite<2>(_unchecked: Int(2)).underlying.rawValue)
         }
     }
 }

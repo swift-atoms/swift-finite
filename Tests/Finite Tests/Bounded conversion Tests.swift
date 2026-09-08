@@ -24,11 +24,10 @@ struct `Bounded ordinal conversions preserve the destination domain` {
     }
 
     @Test
-    func `Injection requires a source value within its declared domain`() async {
+    func `The compatibility initializer rejects an invalid conversion source`() async {
         await #expect(processExitsWith: .failure) {
             let source = Ordinal.Finite<3>(_unchecked: Int(3))
-            let result: Ordinal.Finite<8> = source.injected()
-            print(result.underlying.rawValue)
+            print(source.underlying.rawValue)
         }
     }
 

@@ -1,12 +1,10 @@
 public import Cardinal
 public import Ordinal
-public import Tagged
 
-extension Tagged::Tagged: Finite::Finite.Enumerable
-where Tag: Finite::Finite.Capacity, Underlying == Ordinal::Ordinal {
+extension Ordinal::Ordinal.Finite: Finite::Finite.Enumerable {
 
     @inlinable
-    public static var count: Cardinal::Cardinal { Tag.capacity }
+    public static var count: Cardinal::Cardinal { Finite::Finite.Bound<N>.capacity }
 
     @inlinable
     public var ordinal: Ordinal::Ordinal { underlying }

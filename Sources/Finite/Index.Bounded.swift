@@ -12,7 +12,7 @@ extension Tagged::Tagged where Tag: ~Copyable & ~Escapable {
 
     @inlinable
     public init?<let N: Int>(_ index: Tagged::Tagged<Tag, Ordinal::Ordinal>)
-    where Underlying == Tagged::Tagged<Finite::Finite.Bound<N>, Ordinal::Ordinal> {
+    where Underlying == Ordinal::Ordinal.Finite<N> {
         guard let finite = Ordinal::Ordinal.Finite<N>(index.underlying) else { return nil }
         self.init(_unchecked: finite)
     }

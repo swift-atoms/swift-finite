@@ -8,7 +8,7 @@ import Testing
 @testable import Finite
 
 @Suite
-struct `Enumeration - Collection` {
+struct `Finite enumeration satisfies collection index operations` {
     @Test
     func `startIndex is zero`() {
         let enumeration = Ordinal.Finite<5>.allCases
@@ -47,7 +47,7 @@ struct `Enumeration - Collection` {
 }
 
 @Suite
-struct `Enumeration - BidirectionalCollection` {
+struct `Finite enumeration supports traversal in both directions` {
     @Test
     func `index before decrements by 1`() {
         let enumeration = Ordinal.Finite<10>.allCases
@@ -59,7 +59,7 @@ struct `Enumeration - BidirectionalCollection` {
     }
 
     @Test
-    func `reverse iteration`() {
+    func `Reversed enumeration visits positions in descending order`() {
         let enumeration = Ordinal.Finite<3>.allCases
         let reversed = Array(enumeration.reversed())
         #expect(reversed.count == 3)
@@ -70,16 +70,16 @@ struct `Enumeration - BidirectionalCollection` {
 }
 
 @Suite
-struct `Enumeration - RandomAccessCollection` {
+struct `Finite enumeration preserves distances and bounded offsets` {
     @Test
-    func `distance from start to end`() {
+    func `The full index distance equals the domain size`() {
         let enumeration = Ordinal.Finite<10>.allCases
         let distance = enumeration.distance(from: enumeration.startIndex, to: enumeration.endIndex)
         #expect(distance == 10)
     }
 
     @Test
-    func `distance between indices`() {
+    func `Index distances equal their positional differences`() {
         let enumeration = Ordinal.Finite<10>.allCases
         typealias I = Finite.Enumeration<Ordinal.Finite<10>>.Index
         let i0: I = 0
@@ -93,7 +93,7 @@ struct `Enumeration - RandomAccessCollection` {
     }
 
     @Test
-    func `index offsetBy`() {
+    func `Index offsets preserve their signed distances`() {
         let enumeration = Ordinal.Finite<10>.allCases
         typealias I = Finite.Enumeration<Ordinal.Finite<10>>.Index
         let i0: I = 0
@@ -125,7 +125,7 @@ struct `Enumeration - RandomAccessCollection` {
     }
 
     @Test
-    func `index offsetBy limitedBy with negative distance`() {
+    func `Backward offsets respect limits in their direction`() {
         let enumeration = Ordinal.Finite<10>.allCases
         typealias I = Finite.Enumeration<Ordinal.Finite<10>>.Index
         let i5: I = 5
@@ -140,7 +140,7 @@ struct `Enumeration - RandomAccessCollection` {
 }
 
 @Suite
-struct `Enumeration - Iterator` {
+struct `Finite iterators visit their domains and stop at the end` {
     @Test
     func `iterator produces all elements in order`() {
         let enumeration = Ordinal.Finite<4>.allCases
@@ -154,7 +154,7 @@ struct `Enumeration - Iterator` {
     }
 
     @Test
-    func `iterator exhaustion`() {
+    func `An exhausted iterator continues returning no element`() {
         let enumeration = Ordinal.Finite<5>.allCases
         var iterator = enumeration.makeIterator()
 
@@ -167,7 +167,7 @@ struct `Enumeration - Iterator` {
     }
 
     @Test
-    func `for-in loop iteration`() {
+    func `A loop visits each bounded ordinal in ascending order`() {
         var values: [Ordinal.Finite<5>] = []
         for ordinal in Ordinal.Finite<5>.allCases {
             values.append(ordinal)
@@ -179,7 +179,7 @@ struct `Enumeration - Iterator` {
 }
 
 @Suite
-struct `Enumeration - Total Element Access` {
+struct `Element lookup returns values only within the domain` {
     @Test(arguments: [0, 1, 2, 3, 4])
     func `element at returns value for valid index`(index: Int) {
         let enumeration = Ordinal.Finite<5>.allCases
@@ -196,9 +196,9 @@ struct `Enumeration - Total Element Access` {
 }
 
 @Suite
-struct `Enumeration - Zero-Cost` {
+struct `Repeated finite enumeration preserves its values` {
     @Test
-    func `Enumeration is zero-size type`() {
+    func `Equally bounded enumerations produce the same values`() {
         let enum1 = Ordinal.Finite<3>.allCases
         let enum2 = Ordinal.Finite<3>.allCases
 

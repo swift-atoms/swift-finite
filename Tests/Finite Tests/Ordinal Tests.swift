@@ -8,21 +8,21 @@ import Testing
 @testable import Finite
 
 @Suite
-struct `Ordinal_Finite - Properties` {
+struct `Bounded ordinals expose their positions and domain limits` {
     @Test(arguments: [0, 1, 2])
-    func `position accessor`(value: Int) {
+    func `The position view preserves the supplied integer`(value: Int) {
         let ordinal: Ordinal.Finite<5> = Ordinal.Finite(value)!
         #expect(ordinal.position.rawValue == UInt(value))
     }
 
     @Test(arguments: [0, 1, 2])
-    func `roundtrip through Int`(value: Int) {
+    func `Repeated integer construction preserves the same bounded position`(value: Int) {
         let ordinal: Ordinal.Finite<5> = Ordinal.Finite(value)!
         #expect(ordinal == Ordinal.Finite(value)!)
     }
 
     @Test
-    func `capacity property`() {
+    func `Capacity equals the declared finite bound`() {
         #expect(Ordinal.Finite<3>.capacity() == 3)
         #expect(Ordinal.Finite<10>.capacity() == 10)
         #expect(Ordinal.Finite<1>.capacity() == 1)
@@ -30,21 +30,21 @@ struct `Ordinal_Finite - Properties` {
     }
 
     @Test
-    func `max property`() {
+    func `The maximum exists only for a nonempty domain`() {
         #expect(Ordinal.Finite<5>.max() == 4)
         #expect(Ordinal.Finite<1>.max() == 0)
         #expect(Ordinal.Finite<0>.max() == nil)
     }
 
     @Test
-    func `zero property`() {
+    func `Zero denotes the first position of a nonempty domain`() {
         let zero: Ordinal.Finite<5> = .zero
         #expect(zero == 0)
     }
 }
 
 @Suite
-struct `Ordinal_Finite - Successor and Predecessor` {
+struct `Adjacent bounded ordinals stop at their domain endpoints` {
     @Test
     func `successor returns next value`() {
         let ordinal: Ordinal.Finite<5> = 2
@@ -74,7 +74,7 @@ struct `Ordinal_Finite - Successor and Predecessor` {
     }
 
     @Test
-    func `successor chain`() {
+    func `Successive ordinals visit the entire domain in order`() {
         var ordinal: Ordinal.Finite<4> = .zero
         var values: [Ordinal.Finite<4>] = [ordinal]
         while let next = ordinal.successor() {
@@ -86,7 +86,7 @@ struct `Ordinal_Finite - Successor and Predecessor` {
 }
 
 @Suite
-struct `Ordinal_Finite - Distance and Offset` {
+struct `Bounded ordinal distances and offsets preserve positions` {
     @Test
     func `distance to calculates signed distance`() {
         let a: Ordinal.Finite<10> = 2
@@ -119,7 +119,7 @@ struct `Ordinal_Finite - Distance and Offset` {
 }
 
 @Suite
-struct `Ordinal_Finite - Complement` {
+struct `Ordinal complements reflect their finite domains` {
     @Test
     func `complement mirrors position`() {
         #expect(Ordinal.Finite<4>(_unchecked: 0).complement() == 3)
@@ -138,7 +138,7 @@ struct `Ordinal_Finite - Complement` {
 }
 
 @Suite
-struct `Ordinal_Finite - Product Isomorphism` {
+struct `Product coordinates preserve bounded ordinal positions` {
     @Test
     func `decomposed extracts row and column`() {
         let index: Ordinal.Finite<12> = 7
@@ -182,9 +182,9 @@ struct `Ordinal_Finite - Product Isomorphism` {
 }
 
 @Suite
-struct `Ordinal_Finite - Initializers` {
+struct `Bounded ordinal constructors preserve valid positions` {
     @Test(arguments: [0, 1, 2, 3, 4])
-    func `init from Int with valid value`(value: Int) {
+    func `Checked integer construction preserves every valid position`(value: Int) {
         let ordinal: Ordinal.Finite<5>? = Ordinal.Finite(value)
         #expect(ordinal != nil)
         #expect(ordinal == Ordinal.Finite(value)!)
@@ -197,21 +197,21 @@ struct `Ordinal_Finite - Initializers` {
     }
 
     @Test(arguments: [0, 1, 2])
-    func `init from Ordinal with valid value`(value: Int) {
+    func `Checked ordinal construction preserves every valid position`(value: Int) {
         let ordinal: Ordinal.Finite<5>? = Ordinal.Finite(Ordinal(UInt(value)))
         #expect(ordinal != nil)
         #expect(ordinal == Ordinal.Finite(value)!)
     }
 
     @Test(arguments: [0, 1, 2])
-    func `init unchecked creates ordinal without validation`(value: Int) {
+    func `The compatibility initializer preserves each valid position`(value: Int) {
         let ordinal: Ordinal.Finite<5> = Ordinal.Finite(_unchecked: value)
         #expect(ordinal == Ordinal.Finite(value)!)
     }
 }
 
 @Suite
-struct `Ordinal_Finite - Injection and Projection` {
+struct `Bounded ordinal conversions preserve their destination domains` {
     @Test
     func `injected safely converts to larger domain`() {
         let ord2: Ordinal.Finite<2> = 0
@@ -242,9 +242,9 @@ struct `Ordinal_Finite - Injection and Projection` {
 }
 
 @Suite
-struct `Ordinal_Finite - Protocol Conformances` {
+struct `Bounded ordinal conformances preserve value semantics` {
     @Test
-    func `Equatable reflexivity`() {
+    func `Equality distinguishes bounded ordinal positions`() {
         let ord1: Ordinal.Finite<5> = 2
         let ord2: Ordinal.Finite<5> = 2
         let ord3: Ordinal.Finite<5> = 3
@@ -259,7 +259,7 @@ struct `Ordinal_Finite - Protocol Conformances` {
     }
 
     @Test
-    func `Comparable ordering`() {
+    func `Bounded ordinals are ordered by their positions`() {
         let ord1: Ordinal.Finite<5> = 1
         let ord2: Ordinal.Finite<5> = 3
         #expect(ord1 < ord2)
@@ -267,18 +267,21 @@ struct `Ordinal_Finite - Protocol Conformances` {
     }
 
     @Test
-    func `Sendable conformance`() {
+    func `A bounded ordinal can be used as a Sendable value`() {
         let ordinal: Ordinal.Finite<5> = 2
         let _: any Sendable = ordinal
     }
 }
 
 @Suite
-struct `Ordinal_Finite - Type Structure` {
+struct `Bounded ordinals retain their nominal representation` {
     @Test
-    func `is Tagged type`() {
+    func `A bounded ordinal has a distinct nominal type`() {
         let ordinal: Ordinal.Finite<5> = .zero
-        let _: Tagged<Finite.Bound<5>, Ordinal> = ordinal
+        #expect(
+            ObjectIdentifier(type(of: ordinal))
+                != ObjectIdentifier(Tagged<Finite.Bound<5>, Ordinal>.self)
+        )
     }
 
     @Test
@@ -289,7 +292,7 @@ struct `Ordinal_Finite - Type Structure` {
     }
 
     @Test
-    func `inherits Tagged Ordinal extensions`() {
+    func `The position view preserves the stored ordinal`() {
         let ordinal: Ordinal.Finite<5> = 3
         let position: Ordinal = ordinal.position
         #expect(position == 3)

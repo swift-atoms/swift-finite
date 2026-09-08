@@ -8,7 +8,7 @@ import Testing
 @testable import Finite
 
 @Suite
-struct `Enumerable - Protocol` {
+struct `Finite enumeration preserves counts and ordinal construction` {
 
     @Test
     func `count returns correct count`() {
@@ -31,7 +31,7 @@ struct `Enumerable - Protocol` {
     }
 
     @Test(arguments: [0, 1, 2, 3, 4])
-    func `ordinal roundtrip`(index: Int) {
+    func `Reconstructing a bounded ordinal preserves its position`(index: Int) {
         let ordinal = Ordinal.Finite<5>(_unchecked: index)
         let ord = ordinal.ordinal
         let reconstructed = Ordinal.Finite<5>(_unchecked: (), ordinal: ord)
@@ -58,7 +58,7 @@ struct `Enumerable - Protocol` {
 }
 
 @Suite
-struct `Enumerable - Ordinal Tests` {
+struct `Bounded ordinals enumerate their complete domains` {
     @Test
     func `Ordinal conforms to Enumerable`() {
         let ordinal: Ordinal.Finite<5> = 2
@@ -67,7 +67,7 @@ struct `Enumerable - Ordinal Tests` {
     }
 
     @Test(arguments: [0, 1, 2, 3, 4])
-    func `Ordinal allCases iteration`(expectedIndex: Int) {
+    func `Each enumerated ordinal matches its array position`(expectedIndex: Int) {
         let allCases = Array(Ordinal.Finite<5>.allCases)
         #expect(allCases[expectedIndex] == Ordinal.Finite(expectedIndex)!)
     }

@@ -8,12 +8,12 @@ import Testing
 @testable import Finite
 
 @Suite
-struct `Index_Bounded - Type Structure` {
+struct `Bounded indices retain their element tags and nominal domains` {
     @Test
-    func `typealias resolves to double-tagged`() {
+    func `The bounded index alias tags a nominal bounded ordinal`() {
         let finite: Ordinal.Finite<8> = 0
         let idx: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
-        let _: Tagged<Int, Tagged<Finite.Bound<8>, Ordinal>> = idx
+        let _: Tagged<Int, Ordinal.Finite<8>> = idx
     }
 
     @Test
@@ -32,7 +32,7 @@ struct `Index_Bounded - Type Structure` {
 }
 
 @Suite
-struct `Index_Bounded - Bridging` {
+struct `Bounded index bridges preserve valid positions` {
     @Test(arguments: [0, 1, 2, 3, 7])
     func `narrowing init returns Some for valid indices`(value: Int) {
         let index: Index<Int> = Index(_unchecked: Ordinal(UInt(value)))
@@ -66,9 +66,9 @@ struct `Index_Bounded - Bridging` {
 }
 
 @Suite
-struct `Index_Bounded - Arithmetic` {
+struct `Bounded index arithmetic preserves its finite domain` {
     @Test
-    func `successor via underlying`() {
+    func `The bounded index exposes its next ordinal`() {
         let finite: Ordinal.Finite<8> = 3
         let bounded: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
         let next = bounded.underlying.successor()
@@ -86,7 +86,7 @@ struct `Index_Bounded - Arithmetic` {
     }
 
     @Test
-    func `predecessor via underlying`() {
+    func `The bounded index exposes its previous ordinal`() {
         let finite: Ordinal.Finite<8> = 3
         let bounded: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
         let previous = bounded.underlying.predecessor()
@@ -96,7 +96,7 @@ struct `Index_Bounded - Arithmetic` {
     }
 
     @Test
-    func `offset via underlying`() {
+    func `The bounded index exposes its shifted ordinal`() {
         let finite: Ordinal.Finite<8> = 3
         let bounded: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
         let offset = bounded.underlying.offset(by: 2)
@@ -106,7 +106,7 @@ struct `Index_Bounded - Arithmetic` {
 }
 
 @Suite
-struct `Index_Bounded - Edge Cases` {
+struct `Bounded indices respect empty and singleton domains` {
     @Test
     func `narrowing with zero capacity always returns nil`() {
         let index: Index<Int> = Index(_unchecked: .zero)

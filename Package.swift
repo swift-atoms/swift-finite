@@ -83,7 +83,8 @@ let package = Package(
                 .product(name: "Tagged", package: "swift-tagged"),
                 .target(name: "Finite Foundation Integration"),
             ],
-            path: "Tests/Finite Tests"
+            path: "Tests/Finite Tests",
+            resources: [.copy("Fixtures")]
         ),
     ],
     swiftLanguageModes: [.v6]
