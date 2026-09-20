@@ -14,30 +14,30 @@ public enum Derivation {
         let generics: [String]
         let name: String
         if let structure = declaration.as(StructDeclSyntax.self) {
-            let properties = StoredProperties(structure, requiresMemberwise: true)
-            guard properties.diagnostics.isEmpty else { throw AlgebraDiagnostic(properties.diagnostics.joined(separator: "; ")) }
+            let properties = Type.Syntax.Properties(structure, requiresMemberwise: true)
+            guard properties.diagnostics.isEmpty else { throw Type.Failure(properties.diagnostics.joined(separator: "; ")) }
             alternatives = [.init(name: nil, labels: properties.fields.map { $0.name }, types: properties.fields.map { $0.type.trimmedDescription })]
             generics = structure.genericParameterClause?.parameters.map(\.name.text) ?? []
             name = structure.name.text
         } else if let enumeration = declaration.as(EnumDeclSyntax.self) {
             guard enumeration.inheritanceClause?.inheritedTypes.allSatisfy({ !["String", "Int", "UInt", "~Copyable", "~Escapable"].contains($0.type.trimmedDescription) }) ?? true else {
-                throw AlgebraDiagnostic("@Finite requires a Copyable, Escapable sum without raw values")
+                throw Type.Failure("@Finite requires a Copyable, Escapable sum without raw values")
             }
-            alternatives = RecursiveShape.elements(of: enumeration).map { item in
-                .init(name: item.name.text, labels: RecursiveShape.parameters(of: item).map { RecursiveShape.label(of: $0) },
-                    types: RecursiveShape.parameters(of: item).map { $0.type.trimmedDescription })
+            alternatives = Type.Syntax.Recursion.elements(of: enumeration).map { item in
+                .init(name: item.name.text, labels: Type.Syntax.Recursion.parameters(of: item).map { Type.Syntax.Recursion.label(of: $0) },
+                    types: Type.Syntax.Recursion.parameters(of: item).map { $0.type.trimmedDescription })
             }
             generics = enumeration.genericParameterClause?.parameters.map(\.name.text) ?? []
             name = enumeration.name.text
-        } else { throw AlgebraDiagnostic("@Finite applies to structs and enums") }
+        } else { throw Type.Failure("@Finite applies to structs and enums") }
         for payload in alternatives.flatMap(\.types) {
             if payload.split(whereSeparator: { !$0.isLetter && !$0.isNumber && $0 != "_" }).contains(where: { $0 == name || $0 == "Self" }) {
-                throw AlgebraDiagnostic("@Finite does not derive cardinality for recursive types")
+                throw Type.Failure("@Finite does not derive cardinality for recursive types")
             }
         }
         let requirements = generics.map { "\($0): Finite::Finite.Enumerable" }
         let whereClause = requirements.isEmpty ? "" : " where " + requirements.joined(separator: ", ")
-        let access = RecursiveShape.access(of: declaration)
+        let access = Type.Syntax.Recursion.access(of: declaration)
         let cardinalities = alternatives.map(\.cardinality)
         let count = "Finite::Finite.sumCardinality([\(cardinalities.joined(separator: ", "))])"
         var ranks: [String] = []
