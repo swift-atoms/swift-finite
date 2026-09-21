@@ -13,14 +13,23 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
+        .library(name: "Finite Macro Core", targets: ["Finite Macro Core"]),
         .library(name: "Finite Macro", targets: ["Finite Macro"]),
         .library(name: "Finite", targets: ["Finite"]),
 
         .library(name: "Finite Foundation Integration", targets: ["Finite Foundation Integration"]),
         .library(name: "Finite Test Support", targets: ["Finite Test Support"]),
     ],
+    traits: [
+        .trait(name: "Polarity", description: "Polarity integration"),
+        .trait(name: "Algebra", description: "Algebra integration"),
+        .trait(name: "Comparison", description: "Comparison integration"),
+        .default(enabledTraits: ["Comparison", "Algebra", "Polarity"]),
+    ],
     dependencies: [
         .package(url: "https://github.com/swiftlang/swift-syntax.git", "603.0.2"..<"604.0.0"),
+        .package(url: "https://github.com/swift-atoms/swift-pair.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-comparison.git", branch: "main"),
         .package(
             url: "https://github.com/swift-atoms/swift-difference.git",
             branch: "main"
@@ -46,10 +55,13 @@ let package = Package(
             branch: "main"
         ),
         .package(url: "https://github.com/swift-atoms/swift-algebra.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-polarity.git", branch: "main"),
     ],
     targets: [
         .testTarget(name: "Finite Macro Tests", dependencies: [
             "Finite Macro",
+            "Finite Macro Core",
+            .product(name: "SwiftParser", package: "swift-syntax"),
         ]),
         .target(name: "Finite Macro", dependencies: [
             "Finite Macro Plugin",
@@ -59,6 +71,7 @@ let package = Package(
         ]),
         .macro(name: "Finite Macro Plugin", dependencies: [
             "Finite Macro Core",
+            .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
             .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
             .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
             .product(name: "SwiftSyntax", package: "swift-syntax"),
@@ -71,12 +84,16 @@ let package = Package(
         .target(
             name: "Finite",
             dependencies: [
+                .product(name: "Pair", package: "swift-pair", condition: .when(traits: ["Comparison"])),
+                .product(name: "Comparison", package: "swift-comparison", condition: .when(traits: ["Comparison"])),
                 .product(name: "Difference", package: "swift-difference"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Iterator", package: "swift-iterator"),
+                .product(name: "Algebra", package: "swift-algebra", condition: .when(traits: ["Algebra"])),
+                .product(name: "Polarity", package: "swift-polarity", condition: .when(traits: ["Polarity"])),
             ],
             path: "Sources/Finite"
         ),
@@ -109,6 +126,20 @@ let package = Package(
             ],
             path: "Tests/Finite Tests",
             resources: [.copy("Fixtures")]
+        ),
+        .testTarget(
+            name: "Finite Comparison Tests",
+            dependencies: [
+                .target(name: "Finite"),
+                .target(name: "Finite Test Support"),
+                .product(name: "Cardinal", package: "swift-cardinal", condition: .when(traits: ["Comparison"])),
+                .product(name: "Comparison", package: "swift-comparison", condition: .when(traits: ["Comparison"])),
+                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Comparison"])),
+                .product(name: "Ordinal", package: "swift-ordinal", condition: .when(traits: ["Comparison"])),
+                .product(name: "Pair", package: "swift-pair", condition: .when(traits: ["Comparison"])),
+                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Comparison"])),
+            ],
+            path: "Tests/Finite Comparison Tests"
         ),
     ],
     swiftLanguageModes: [.v6]

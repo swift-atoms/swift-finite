@@ -3,7 +3,7 @@ public import Ordinal
 
 extension Finite::Finite {
 
-    public protocol Enumerable: CaseIterable, Sendable {
+    public protocol Enumerable {
 
         static var count: Cardinal::Cardinal { get }
 

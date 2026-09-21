@@ -2,7 +2,7 @@ public import Cardinal
 public import Ordinal
 
 extension Finite::Finite.Enumerable
-where AllCases: RandomAccessCollection, AllCases.Index == Int, Self: Equatable {
+where Self: CaseIterable, AllCases: RandomAccessCollection, AllCases.Index == Int, Self: Equatable {
 
     @inlinable
     public static var count: Cardinal::Cardinal {
