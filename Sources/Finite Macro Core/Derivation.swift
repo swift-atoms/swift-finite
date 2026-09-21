@@ -3,37 +3,6 @@ public import SwiftSyntax
 import SwiftSyntaxBuilder
 
 public enum Derivation {
-    /// Conservative syntax-only eligibility for automatic composition. Unknown
-    /// nominal types and aliases still require an explicit finite derivation.
-    public static func supportsAutomaticEnumeration(of structure: StructDeclSyntax) -> Bool {
-        let properties = Type.Syntax.Properties(structure)
-        return structure.genericParameterClause == nil
-            && properties.diagnostics.isEmpty
-            && properties.fields.allSatisfy { isStandardFinite($0.type) }
-            && (try? constructionLabels(structure, properties: properties)) != nil
-    }
-
-    private static func isStandardFinite(_ type: TypeSyntax) -> Bool {
-        if let optional = type.as(OptionalTypeSyntax.self) {
-            return isStandardFinite(optional.wrappedType)
-        }
-        let name: String
-        let arguments: GenericArgumentClauseSyntax?
-        if let identifier = type.as(IdentifierTypeSyntax.self) {
-            name = identifier.name.text
-            arguments = identifier.genericArgumentClause
-        } else if let member = type.as(MemberTypeSyntax.self), member.baseType.trimmedDescription == "Swift" {
-            name = member.name.text
-            arguments = member.genericArgumentClause
-        } else { return false }
-        if name == "Bool", arguments == nil { return true }
-        if name == "Optional", let arguments, arguments.arguments.count == 1,
-            let wrapped = arguments.arguments.first?.argument.as(TypeSyntax.self) {
-            return isStandardFinite(wrapped)
-        }
-        return false
-    }
-
     private struct Alternative {
         let name: String?
         let labels: [String?]
