@@ -1,3 +1,4 @@
+#if Tagged
 import Cardinal
 import Finite_Test_Support
 import Index
@@ -298,3 +299,5 @@ struct `Bounded ordinals retain their nominal representation` {
         #expect(position == 3)
     }
 }
+
+#endif

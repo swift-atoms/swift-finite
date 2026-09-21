@@ -1,3 +1,4 @@
+#if Tagged
 public import Ordinal
 public import Tagged
 
@@ -28,3 +29,5 @@ where Underlying == Ordinal::Ordinal, Tag: ~Copyable & ~Escapable {
         self = bounded.map { $0.underlying }
     }
 }
+
+#endif

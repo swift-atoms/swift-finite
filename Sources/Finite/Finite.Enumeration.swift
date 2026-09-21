@@ -1,8 +1,5 @@
 public import Cardinal
-import Index
-public import Iterator
 public import Ordinal
-import Tagged
 
 extension Finite::Finite {
 
@@ -16,7 +13,7 @@ extension Finite::Finite {
             Iterator()
         }
 
-        public struct Iterator: Iterator::Iterator.`Protocol`, IteratorProtocol, Sendable {
+        public struct Iterator: IteratorProtocol, Sendable {
             @usableFromInline
             var index: Ordinal::Ordinal = .zero
 
@@ -41,3 +38,8 @@ extension Finite::Finite.Enumeration {
         return Element(Ordinal::Ordinal(UInt(position)))
     }
 }
+
+#if Iterator
+public import Iterator
+extension Finite::Finite.Enumeration.Iterator: Iterator::Iterator.`Protocol` {}
+#endif

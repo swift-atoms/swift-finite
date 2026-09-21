@@ -1,6 +1,6 @@
+#if Tagged
 public import Cardinal
 import Index
-import Iterator
 public import Ordinal
 public import Tagged
 
@@ -15,3 +15,5 @@ extension Finite::Finite.Enumeration: Swift.BidirectionalCollection {
         return Index(_unchecked: Ordinal::Ordinal(i.underlying.rawValue - 1))
     }
 }
+
+#endif

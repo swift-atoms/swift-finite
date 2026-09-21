@@ -1,5 +1,4 @@
 public import Cardinal
-public import Difference
 public import Ordinal
 
 extension Ordinal::Ordinal.Finite {
@@ -36,11 +35,9 @@ extension Ordinal::Ordinal.Finite {
 
     @inlinable
     public func offset(by delta: Int) -> Self? {
-        guard N > 0,
-            let result = try? underlying + Difference::Difference(delta),
-            result.rawValue < UInt(N)
-        else { return nil }
-        return Self(_unchecked: result)
+        let result = Int(underlying.rawValue).addingReportingOverflow(delta)
+        guard N > 0, !result.overflow, result.partialValue >= 0, result.partialValue < N else { return nil }
+        return Self(_unchecked: result.partialValue)
     }
 
     @inlinable

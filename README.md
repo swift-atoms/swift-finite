@@ -64,3 +64,7 @@ that input separately conforms to `Sendable`.
 
 Use the local `macros.xcworkspace`, scheme `Finite Inputs`, to exercise the finite
 laws, operation/interface composition, and the BW2 article 1.1 consumer together.
+
+## Optional integrations
+
+Core finite enumeration, macros, and bounded ordinal operations are available without optional dependencies. Enumeration uses Swift `Int` indices by default. Enable `Tagged` to use domain-tagged indices and related adapters; this enables the matching Cardinal and Ordinal integrations. `Algebra` and `Comparison` require `Tagged`. `Iterator` adds the iterator protocol integration and requires `Tagged`; `Polarity` is independent. Optional integrations are opt-in; no traits are enabled by default.

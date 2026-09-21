@@ -21,10 +21,11 @@ let package = Package(
         .library(name: "Finite Test Support", targets: ["Finite Test Support"]),
     ],
     traits: [
+        .trait(name: "Algebra", description: "Algebra integration", enabledTraits: ["Tagged"]),
+        .trait(name: "Comparison", description: "Comparison integration", enabledTraits: ["Tagged"]),
         .trait(name: "Polarity", description: "Polarity integration"),
-        .trait(name: "Algebra", description: "Algebra integration"),
-        .trait(name: "Comparison", description: "Comparison integration"),
-        .default(enabledTraits: ["Comparison", "Algebra", "Polarity"]),
+        .trait(name: "Tagged", description: "Tagged integration"),
+        .trait(name: "Iterator", description: "Iterator integration", enabledTraits: ["Tagged"]),
     ],
     dependencies: [
         .package(url: "https://github.com/swiftlang/swift-syntax.git", "603.0.2"..<"604.0.0"),
@@ -36,11 +37,11 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/swift-atoms/swift-cardinal.git",
-            branch: "main"
+            branch: "main", traits: [.trait(name: "Tagged", condition: .when(traits: ["Tagged"]))]
         ),
         .package(
             url: "https://github.com/swift-atoms/swift-ordinal.git",
-            branch: "main"
+            branch: "main", traits: [.trait(name: "Tagged", condition: .when(traits: ["Tagged"]))]
         ),
         .package(
             url: "https://github.com/swift-atoms/swift-tagged.git",
@@ -86,12 +87,12 @@ let package = Package(
             dependencies: [
                 .product(name: "Pair", package: "swift-pair", condition: .when(traits: ["Comparison"])),
                 .product(name: "Comparison", package: "swift-comparison", condition: .when(traits: ["Comparison"])),
-                .product(name: "Difference", package: "swift-difference"),
+                .product(name: "Difference", package: "swift-difference", condition: .when(traits: ["Tagged"])),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Index", package: "swift-index"),
-                .product(name: "Tagged", package: "swift-tagged"),
-                .product(name: "Iterator", package: "swift-iterator"),
+                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Tagged"])),
+                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Tagged"])),
+                .product(name: "Iterator", package: "swift-iterator", condition: .when(traits: ["Iterator"])),
                 .product(name: "Algebra", package: "swift-algebra", condition: .when(traits: ["Algebra"])),
                 .product(name: "Polarity", package: "swift-polarity", condition: .when(traits: ["Polarity"])),
             ],
@@ -109,7 +110,7 @@ let package = Package(
             name: "Finite Test Support",
             dependencies: [
                 .target(name: "Finite"),
-                .product(name: "Index Test Support", package: "swift-index"),
+                .product(name: "Index Test Support", package: "swift-index", condition: .when(traits: ["Tagged"])),
             ],
             path: "Tests/Support"
         ),
@@ -119,9 +120,9 @@ let package = Package(
                 .target(name: "Finite"),
                 .target(name: "Finite Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(name: "Index", package: "swift-index"),
+                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Tagged"])),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Tagged", package: "swift-tagged"),
+                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Tagged"])),
                 .target(name: "Finite Foundation Integration"),
             ],
             path: "Tests/Finite Tests",
@@ -134,10 +135,10 @@ let package = Package(
                 .target(name: "Finite Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal", condition: .when(traits: ["Comparison"])),
                 .product(name: "Comparison", package: "swift-comparison", condition: .when(traits: ["Comparison"])),
-                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Comparison"])),
+                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Tagged"])),
                 .product(name: "Ordinal", package: "swift-ordinal", condition: .when(traits: ["Comparison"])),
                 .product(name: "Pair", package: "swift-pair", condition: .when(traits: ["Comparison"])),
-                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Comparison"])),
+                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Tagged"])),
             ],
             path: "Tests/Finite Comparison Tests"
         ),

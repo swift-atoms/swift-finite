@@ -1,3 +1,4 @@
+#if Tagged
 import Cardinal
 import Finite_Test_Support
 import Index
@@ -213,3 +214,5 @@ struct `Repeated finite enumeration preserves its values` {
         #expect(array1 == array2)
     }
 }
+
+#endif

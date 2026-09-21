@@ -1,7 +1,7 @@
+#if Tagged
 public import Cardinal
 public import Difference
 import Index
-import Iterator
 public import Ordinal
 public import Tagged
 
@@ -56,3 +56,5 @@ extension Finite::Finite.Enumeration: Swift.RandomAccessCollection {
         return index(i, offsetBy: distance)
     }
 }
+
+#endif

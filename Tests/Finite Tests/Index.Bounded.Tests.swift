@@ -1,3 +1,4 @@
+#if Tagged
 import Cardinal
 import Finite_Test_Support
 import Index
@@ -124,3 +125,5 @@ struct `Bounded indices respect empty and singleton domains` {
         #expect(oneBounded == nil)
     }
 }
+
+#endif

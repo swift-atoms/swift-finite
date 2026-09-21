@@ -1,3 +1,4 @@
+#if Tagged
 import Finite
 import Testing
 
@@ -131,3 +132,5 @@ struct `Finite enumeration obeys collection index laws` {
         #expect(enumeration.distance(from: enumeration.endIndex, to: last) == -1)
     }
 }
+
+#endif

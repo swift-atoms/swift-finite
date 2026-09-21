@@ -1,3 +1,4 @@
+#if Tagged
 public import Cardinal
 public import Difference
 public import Ordinal
@@ -13,3 +14,5 @@ extension Ordinal::Ordinal.Finite {
 
     public typealias Offset = Tagged::Tagged<Domain, Difference::Difference>
 }
+
+#endif

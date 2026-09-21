@@ -1,3 +1,4 @@
+#if Tagged
 import Cardinal
 import Finite_Test_Support
 import Index
@@ -80,3 +81,5 @@ struct `Bounded ordinals enumerate their complete domains` {
         #expect(enumeration.endIndex == 10)
     }
 }
+
+#endif
