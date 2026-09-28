@@ -37,7 +37,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/swift-atoms/swift-cardinal.git",
-            branch: "main", traits: [.trait(name: "Tagged", condition: .when(traits: ["Tagged"]))]
+            branch: "main"
         ),
         .package(
             url: "https://github.com/swift-atoms/swift-ordinal.git",
