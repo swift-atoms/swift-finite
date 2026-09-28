@@ -41,7 +41,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/swift-atoms/swift-ordinal.git",
-            branch: "main", traits: [.trait(name: "Tagged", condition: .when(traits: ["Tagged"]))]
+            branch: "main"
         ),
         .package(
             url: "https://github.com/swift-atoms/swift-tagged.git",
@@ -87,11 +87,11 @@ let package = Package(
             dependencies: [
                 .product(name: "Pair", package: "swift-pair", condition: .when(traits: ["Comparison"])),
                 .product(name: "Comparison", package: "swift-comparison", condition: .when(traits: ["Comparison"])),
-                .product(name: "Difference", package: "swift-difference", condition: .when(traits: ["Tagged"])),
+                .product(name: "Difference", package: "swift-difference", condition: .when(traits: ["Tagged", "Algebra", "Comparison", "Iterator"])),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Tagged"])),
-                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Tagged"])),
+                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Tagged", "Algebra", "Comparison", "Iterator"])),
+                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Tagged", "Algebra", "Comparison", "Iterator"])),
                 .product(name: "Iterator", package: "swift-iterator", condition: .when(traits: ["Iterator"])),
                 .product(name: "Algebra", package: "swift-algebra", condition: .when(traits: ["Algebra"])),
                 .product(name: "Polarity", package: "swift-polarity", condition: .when(traits: ["Polarity"])),
@@ -110,7 +110,7 @@ let package = Package(
             name: "Finite Test Support",
             dependencies: [
                 .target(name: "Finite"),
-                .product(name: "Index Test Support", package: "swift-index", condition: .when(traits: ["Tagged"])),
+                .product(name: "Index Test Support", package: "swift-index", condition: .when(traits: ["Tagged", "Algebra", "Comparison", "Iterator"])),
             ],
             path: "Tests/Support"
         ),
@@ -120,9 +120,9 @@ let package = Package(
                 .target(name: "Finite"),
                 .target(name: "Finite Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Tagged"])),
+                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Tagged", "Algebra", "Comparison", "Iterator"])),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Tagged"])),
+                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Tagged", "Algebra", "Comparison", "Iterator"])),
                 .target(name: "Finite Foundation Integration"),
             ],
             path: "Tests/Finite Tests",
@@ -135,10 +135,10 @@ let package = Package(
                 .target(name: "Finite Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal", condition: .when(traits: ["Comparison"])),
                 .product(name: "Comparison", package: "swift-comparison", condition: .when(traits: ["Comparison"])),
-                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Tagged"])),
+                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Tagged", "Algebra", "Comparison", "Iterator"])),
                 .product(name: "Ordinal", package: "swift-ordinal", condition: .when(traits: ["Comparison"])),
                 .product(name: "Pair", package: "swift-pair", condition: .when(traits: ["Comparison"])),
-                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Tagged"])),
+                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Tagged", "Algebra", "Comparison", "Iterator"])),
             ],
             path: "Tests/Finite Comparison Tests"
         ),
