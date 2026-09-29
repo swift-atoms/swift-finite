@@ -21,12 +21,14 @@ extension Finite::Finite {
 }
 
 extension Finite::Finite.`Compiler emission preserves bounded ordinal construction contracts` {
+#if Tagged
     @Test
     func `Unrestricted tags coexist with checked nominal enumeration`() throws {
         let compilation = try Self.emit(named: "Valid Construction And Enumeration.swift")
         #expect(compilation.status == 0, Comment(rawValue: compilation.diagnostic))
         #expect(compilation.emittedObject)
     }
+#endif
 
     @Test
     func `Capacity metadata does not confer finite enumeration on a tagged ordinal`() throws {

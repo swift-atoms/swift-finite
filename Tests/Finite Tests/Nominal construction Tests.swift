@@ -92,9 +92,11 @@ struct `Nominal bounded ordinals enforce their construction domain` {
                 print(Ordinal.Finite<3>(_unchecked: Ordinal(UInt.max)).underlying.rawValue)
             case "wideLiteral":
                 print(Ordinal.Finite<3>(integerLiteral: UInt.max).underlying.rawValue)
+#if Tagged
             case "boundedIndexLiteral":
                 let value: Index<Int>.Bounded<3> = 3
                 print(value.underlying.underlying.rawValue)
+#endif
             default:
                 preconditionFailure("Unknown constructor")
             }
@@ -144,6 +146,7 @@ struct `Nominal bounded ordinals enforce their construction domain` {
         }
     }
 
+#if Tagged
     @Test
     func `Safe scalar conveniences preserve their domain and ordinal views`() {
         let low: Ordinal.Finite<3> = 0
@@ -160,7 +163,9 @@ struct `Nominal bounded ordinals enforce their construction domain` {
         #expect(offset.underlying == -1)
         #expect(underlying == 2)
     }
+#endif
 
+#if Tagged
     @Test
     func `Outer index tags retain bounded values through retagging and checked bridges`() {
         struct Domain: ~Copyable, ~Escapable {}
@@ -177,4 +182,5 @@ struct `Nominal bounded ordinals enforce their construction domain` {
         let rejected: Index<Domain>.Bounded<3>? = .init(outside)
         #expect(rejected == nil)
     }
+#endif
 }
