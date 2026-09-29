@@ -1,17 +1,17 @@
-#if Comparison
+#if Order
 public import Cardinal
-public import Comparison
+public import Order
 public import Index
 public import Ordinal
 public import Tagged
 public import Pair
 
-extension Comparison {
+extension Order.Comparison {
 
-    public typealias Value<Payload> = Pair<Comparison, Payload>
+    public typealias Value<Payload> = Pair<Order.Comparison, Payload>
 }
 
-extension Comparison: Finite.Enumerable {
+extension Order.Comparison: Finite.Enumerable {
 
     @inlinable
     public static var count: Cardinal { Cardinal(3) }

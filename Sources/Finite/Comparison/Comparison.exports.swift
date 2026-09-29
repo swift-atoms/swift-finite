@@ -1,5 +1,5 @@
-#if Comparison
-@_exported public import Comparison
+#if Order
+@_exported public import Order
 @_exported public import Cardinal
 @_exported public import Index
 @_exported public import Ordinal

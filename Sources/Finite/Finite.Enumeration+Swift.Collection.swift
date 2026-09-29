@@ -1,6 +1,5 @@
 public import Cardinal
 #if Tagged
-public import Cardinal
 public import Index
 public import Ordinal
 public import Tagged
