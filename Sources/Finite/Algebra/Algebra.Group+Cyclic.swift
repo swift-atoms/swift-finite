@@ -1,9 +1,9 @@
 #if Algebra
 public import Algebra
 public import Cardinal
-public import Index
+import Index
 public import Ordinal
-public import Tagged
+import Tagged
 
 extension Algebra.Group where Element: Finite.Enumerable {
 
