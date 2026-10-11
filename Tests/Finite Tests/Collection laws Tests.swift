@@ -3,12 +3,15 @@ import Finite
 import Testing
 
 private struct WideElement: Finite.Enumerable {
-    static var count: Cardinal { Cardinal(UInt.max) }
     let ordinal: Ordinal
 
     init(_unchecked: Void, ordinal: Ordinal) {
         self.ordinal = ordinal
     }
+}
+
+extension WideElement {
+    static var count: Cardinal { Cardinal(UInt.max) }
 }
 
 @Suite

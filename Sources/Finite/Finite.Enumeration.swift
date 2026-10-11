@@ -3,7 +3,7 @@ public import Ordinal
 
 extension Finite::Finite {
 
-    public struct Enumeration<Element: Finite::Finite.Enumerable>: Swift.Sequence, Sendable {
+    public struct Enumeration<Element: Finite::Finite.Enumerable>: Swift::Sequence, Sendable {
 
         @inlinable
         public init() {}

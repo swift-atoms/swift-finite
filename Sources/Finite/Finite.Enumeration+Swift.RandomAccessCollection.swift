@@ -5,7 +5,7 @@ import Index
 public import Ordinal
 public import Tagged
 
-extension Finite::Finite.Enumeration: Swift.RandomAccessCollection {
+extension Finite::Finite.Enumeration: Swift::RandomAccessCollection {
 
     @inlinable
     public var count: Int {

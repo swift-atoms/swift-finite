@@ -36,6 +36,6 @@ extension Ordinal::Ordinal {
     }
 }
 
-extension Ordinal::Ordinal.Finite: Swift.Hashable {}
+extension Ordinal::Ordinal.Finite: Swift::Hashable {}
 
-extension Ordinal::Ordinal.Finite: Swift.Sendable {}
+extension Ordinal::Ordinal.Finite: Swift::Sendable {}

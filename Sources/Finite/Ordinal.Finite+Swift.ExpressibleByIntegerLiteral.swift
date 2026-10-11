@@ -1,6 +1,6 @@
 public import Ordinal
 
-extension Ordinal::Ordinal.Finite: Swift.ExpressibleByIntegerLiteral {
+extension Ordinal::Ordinal.Finite: Swift::ExpressibleByIntegerLiteral {
 
     @_disfavoredOverload
     @inlinable

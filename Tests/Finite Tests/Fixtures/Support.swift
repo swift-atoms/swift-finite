@@ -1,6 +1,8 @@
 import Finite
 
-enum CapacityThree: Finite.Capacity {
+enum CapacityThree: Finite.Capacity {}
+
+extension CapacityThree {
     static var capacity: Cardinal { 3 }
 }
 

@@ -14,7 +14,7 @@ extension Finite::Finite {
             let terminationReason: Process.TerminationReason
         }
 
-        enum Failure: Swift.Error {
+        enum Failure: Swift::Error {
             case timedOut(String)
         }
     }

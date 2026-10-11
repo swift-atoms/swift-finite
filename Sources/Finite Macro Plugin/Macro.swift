@@ -3,7 +3,9 @@ import SwiftSyntaxMacros
 import SwiftSyntaxBuilder
 import Finite_Macro_Core
 
-struct Derive: MemberMacro, ExtensionMacro {
+struct Derive: MemberMacro, ExtensionMacro {}
+
+extension Derive {
     private static func isGeneric(_ declaration: some DeclGroupSyntax) -> Bool {
         declaration.as(StructDeclSyntax.self)?.genericParameterClause != nil
             || declaration.as(EnumDeclSyntax.self)?.genericParameterClause != nil

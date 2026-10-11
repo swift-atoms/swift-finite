@@ -4,7 +4,7 @@ public import Index
 public import Ordinal
 public import Tagged
 
-extension Finite::Finite.Enumeration: Swift.Collection {
+extension Finite::Finite.Enumeration: Swift::Collection {
 
     public typealias Index = Index::Index<Element>
 
@@ -32,7 +32,7 @@ extension Finite::Finite.Enumeration: Swift.Collection {
 #endif
 
 #if !Tagged
-extension Finite::Finite.Enumeration: Swift.RandomAccessCollection {
+extension Finite::Finite.Enumeration: Swift::RandomAccessCollection {
     public typealias Index = Int
     public var startIndex: Int { 0 }
     public var endIndex: Int {

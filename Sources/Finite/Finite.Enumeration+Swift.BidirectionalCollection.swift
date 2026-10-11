@@ -4,7 +4,7 @@ import Index
 public import Ordinal
 public import Tagged
 
-extension Finite::Finite.Enumeration: Swift.BidirectionalCollection {
+extension Finite::Finite.Enumeration: Swift::BidirectionalCollection {
 
     @inlinable
     public func index(before i: Index) -> Index {

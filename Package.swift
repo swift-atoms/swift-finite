@@ -57,18 +57,18 @@ let package = Package(
     ],
     targets: [
         .testTarget(name: "Finite Macro Tests", dependencies: [
-            "Finite Macro",
-            "Finite Macro Core",
+            .target(name: "Finite Macro"),
+            .target(name: "Finite Macro Core"),
             .product(name: "SwiftParser", package: "swift-syntax"),
         ]),
         .target(name: "Finite Macro", dependencies: [
-            "Finite Macro Plugin",
-            "Finite",
+            .target(name: "Finite Macro Plugin"),
+            .target(name: "Finite"),
             .product(name: "Cardinal", package: "swift-cardinal"),
             .product(name: "Ordinal", package: "swift-ordinal"),
         ]),
         .macro(name: "Finite Macro Plugin", dependencies: [
-            "Finite Macro Core",
+            .target(name: "Finite Macro Core"),
             .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
             .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
             .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
@@ -118,7 +118,6 @@ let package = Package(
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
-                .target(name: "Finite Foundation Integration"),
             ],
             path: "Tests/Finite Tests",
             resources: [.copy("Fixtures")]

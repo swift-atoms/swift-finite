@@ -1,6 +1,6 @@
 public import Ordinal
 
-extension Ordinal::Ordinal.Finite: Swift.Comparable {
+extension Ordinal::Ordinal.Finite: Swift::Comparable {
 
     @inlinable
     public static func < (lhs: Self, rhs: Self) -> Bool {
