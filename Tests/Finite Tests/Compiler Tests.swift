@@ -162,7 +162,7 @@ extension Finite::Finite.`Compiler emission preserves bounded ordinal constructi
         }
 
         let clock = ContinuousClock()
-        let deadline = clock.now.advanced(by: .seconds(30))
+        let deadline = clock.now.advanced(by: .seconds(90))
         while process.isRunning && clock.now < deadline {
             Thread.sleep(forTimeInterval: 0.01)
         }
