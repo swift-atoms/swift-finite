@@ -43,6 +43,6 @@ extension Finite::Finite.Enumeration {
 }
 
 #if Iterator
-public import Iterator
-extension Finite::Finite.Enumeration.Iterator: Iterator::Iterator.`Protocol` {}
+    public import Iterator
+    extension Finite::Finite.Enumeration.Iterator: Iterator::Iterator.`Protocol` {}
 #endif

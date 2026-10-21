@@ -92,11 +92,11 @@ struct `Nominal bounded ordinals enforce their construction domain` {
                 print(Ordinal.Finite<3>(_unchecked: Ordinal(UInt.max)).underlying.rawValue)
             case "wideLiteral":
                 print(Ordinal.Finite<3>(integerLiteral: UInt.max).underlying.rawValue)
-#if Tagged
-            case "boundedIndexLiteral":
-                let value: Index<Int>.Bounded<3> = 3
-                print(value.underlying.underlying.rawValue)
-#endif
+            #if Tagged
+                case "boundedIndexLiteral":
+                    let value: Index<Int>.Bounded<3> = 3
+                    print(value.underlying.underlying.rawValue)
+            #endif
             default:
                 preconditionFailure("Unknown constructor")
             }
@@ -146,41 +146,41 @@ struct `Nominal bounded ordinals enforce their construction domain` {
         }
     }
 
-#if Tagged
-    @Test
-    func `Safe scalar conveniences preserve their domain and ordinal views`() {
-        let low: Ordinal.Finite<3> = 0
-        let high: Ordinal.Finite<3> = 2
-        #expect(Ordinal.Finite<3>.min(low, high) == low)
-        #expect(Ordinal.Finite<3>.max(low, high) == high)
-        #expect(high.position == high.ordinal)
-        #expect(high.description == "2")
-        let count: Ordinal.Finite<3>.Count = .init(Ordinal.Finite<3>.capacity())
-        let offset: Ordinal.Finite<3>.Offset = .init(Difference(-1))
-        let _: Ordinal.Finite<3>.Domain.Type = Finite.Bound<3>.self
-        let underlying: Ordinal.Finite<3>.Underlying = high.underlying
-        #expect(count.underlying == 3)
-        #expect(offset.underlying == -1)
-        #expect(underlying == 2)
-    }
-#endif
+    #if Tagged
+        @Test
+        func `Safe scalar conveniences preserve their domain and ordinal views`() {
+            let low: Ordinal.Finite<3> = 0
+            let high: Ordinal.Finite<3> = 2
+            #expect(Ordinal.Finite<3>.min(low, high) == low)
+            #expect(Ordinal.Finite<3>.max(low, high) == high)
+            #expect(high.position == high.ordinal)
+            #expect(high.description == "2")
+            let count: Ordinal.Finite<3>.Count = .init(Ordinal.Finite<3>.capacity())
+            let offset: Ordinal.Finite<3>.Offset = .init(Difference(-1))
+            let _: Ordinal.Finite<3>.Domain.Type = Finite.Bound<3>.self
+            let underlying: Ordinal.Finite<3>.Underlying = high.underlying
+            #expect(count.underlying == 3)
+            #expect(offset.underlying == -1)
+            #expect(underlying == 2)
+        }
+    #endif
 
-#if Tagged
-    @Test
-    func `Outer index tags retain bounded values through retagging and checked bridges`() {
-        struct Domain: ~Copyable, ~Escapable {}
-        let ordinal: Ordinal.Finite<3> = 2
-        let index: Index<Int>.Bounded<3> = Tagged(_unchecked: ordinal)
-        let retagged: Index<Domain>.Bounded<3> = index.retag(Domain.self)
-        let widened: Index<Domain> = Index(retagged)
-        let mapped: Index<Domain> = retagged.map { $0.underlying }
-        let restored: Index<Domain>.Bounded<3>? = .init(widened)
-        #expect(retagged.underlying == ordinal)
-        #expect(widened == mapped)
-        #expect(restored?.underlying == ordinal)
-        let outside: Index<Domain> = .init(Ordinal(3))
-        let rejected: Index<Domain>.Bounded<3>? = .init(outside)
-        #expect(rejected == nil)
-    }
-#endif
+    #if Tagged
+        @Test
+        func `Outer index tags retain bounded values through retagging and checked bridges`() {
+            struct Domain: ~Copyable, ~Escapable {}
+            let ordinal: Ordinal.Finite<3> = 2
+            let index: Index<Int>.Bounded<3> = Tagged(_unchecked: ordinal)
+            let retagged: Index<Domain>.Bounded<3> = index.retag(Domain.self)
+            let widened: Index<Domain> = Index(retagged)
+            let mapped: Index<Domain> = retagged.map { $0.underlying }
+            let restored: Index<Domain>.Bounded<3>? = .init(widened)
+            #expect(retagged.underlying == ordinal)
+            #expect(widened == mapped)
+            #expect(restored?.underlying == ordinal)
+            let outside: Index<Domain> = .init(Ordinal(3))
+            let rejected: Index<Domain>.Bounded<3>? = .init(outside)
+            #expect(rejected == nil)
+        }
+    #endif
 }

@@ -13,10 +13,10 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
             case "clamp":
                 precondition(value.clamped(offsetBy: Int.max) == value)
             case "decompose":
-                let result: (Ordinal.Finite<4294967296>, Ordinal.Finite<4294967296>)? = value.decomposed()
+                let result: (Ordinal.Finite<4_294_967_296>, Ordinal.Finite<4_294_967_296>)? = value.decomposed()
                 precondition(result == nil)
             case "compose":
-                let component = Ordinal.Finite<4294967296>(Int(1))!
+                let component = Ordinal.Finite<4_294_967_296>(Int(1))!
                 let result: Ordinal.Finite<2>? = .composed(row: component, column: component)
                 precondition(result == nil)
             default:
@@ -52,7 +52,7 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
     @Test
     func `Wide bounded positions retain exact offsets and endpoint clamps`() {
         let position = 4_294_967_295
-        let value = Ordinal.Finite<4294967296>(position)!
+        let value = Ordinal.Finite<4_294_967_296>(position)!
         #expect(value.offset(by: -position)?.underlying.rawValue == 0)
         #expect(value.offset(by: 0) == value)
         #expect(value.offset(by: 1) == nil)
@@ -84,7 +84,7 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
     func `Wide representable products preserve the final row and column`() {
         let row = Ordinal.Finite<65536>(Int(65_535))!
         let column = Ordinal.Finite<65536>(Int(65_535))!
-        let value: Ordinal.Finite<4294967296>? = .composed(row: row, column: column)
+        let value: Ordinal.Finite<4_294_967_296>? = .composed(row: row, column: column)
         #expect(value?.underlying.rawValue == 4_294_967_295)
         let coordinates: (Ordinal.Finite<65536>, Ordinal.Finite<65536>)? = value?.decomposed()
         #expect(coordinates?.0 == row)
@@ -119,7 +119,7 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
     @Test
     func `Distinct finite bounds retain distinct runtime type identities`() {
         withKnownIssue("Swift integer generic metadata collision: https://github.com/swiftlang/swift/issues/90739") {
-            #expect(ObjectIdentifier(Finite.Bound<0>.self) != ObjectIdentifier(Finite.Bound<4294967296>.self))
+            #expect(ObjectIdentifier(Finite.Bound<0>.self) != ObjectIdentifier(Finite.Bound<4_294_967_296>.self))
         } matching: { issue in
             if case .expectationFailed = issue.kind { return true }
             return false

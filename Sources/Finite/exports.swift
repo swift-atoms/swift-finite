@@ -1,14 +1,15 @@
 @_exported public import Cardinal
+@_exported public import Ordinal
+
 #if Tagged
-@_exported public import Difference
+    @_exported public import Difference
 #endif
 #if Tagged
-@_exported public import Index
+    @_exported public import Index
 #endif
 #if Iterator
-@_exported public import Iterator
+    @_exported public import Iterator
 #endif
-@_exported public import Ordinal
 #if Tagged
-@_exported public import Tagged
+    @_exported public import Tagged
 #endif

@@ -1,7 +1,7 @@
 import Finite
 
 func exactEndpoint(_ position: UInt) -> UInt? {
-    let value = Ordinal.Finite<9223372036854775807>(Ordinal(position))
+    let value = Ordinal.Finite<9_223_372_036_854_775_807>(Ordinal(position))
     return value?.underlying.rawValue
 }
 

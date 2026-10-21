@@ -24,7 +24,8 @@ extension Optional: Finite.Enumerable where Wrapped: Finite.Enumerable {
     }
     public init(_unchecked: Void, ordinal: Ordinal) {
         precondition(ordinal.rawValue < Self.count.rawValue, "Optional ordinal is out of range")
-        self = ordinal.rawValue == 0
+        self =
+            ordinal.rawValue == 0
             ? .none
             : .some(Wrapped(_unchecked: (), ordinal: Ordinal(ordinal.rawValue - 1)))
     }

@@ -56,29 +56,41 @@ let package = Package(
         .package(url: "https://github.com/swift-atoms/swift-polarity.git", branch: "main"),
     ],
     targets: [
-        .testTarget(name: "Finite Macro Tests", dependencies: [
-            .target(name: "Finite Macro"),
-            .target(name: "Finite Macro Core"),
-            .product(name: "SwiftParser", package: "swift-syntax"),
-        ]),
-        .target(name: "Finite Macro", dependencies: [
-            .target(name: "Finite Macro Plugin"),
-            .target(name: "Finite"),
-            .product(name: "Cardinal", package: "swift-cardinal"),
-            .product(name: "Ordinal", package: "swift-ordinal"),
-        ]),
-        .macro(name: "Finite Macro Plugin", dependencies: [
-            .target(name: "Finite Macro Core"),
-            .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
-            .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
-            .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
-            .product(name: "SwiftSyntax", package: "swift-syntax"),
-        ]),
-        .target(name: "Finite Macro Core", dependencies: [
-            .product(name: "SwiftSyntax", package: "swift-syntax"),
-            .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
-            .product(name: "Type Algebra Syntax", package: "swift-algebra"),
-        ]),
+        .testTarget(
+            name: "Finite Macro Tests",
+            dependencies: [
+                .target(name: "Finite Macro"),
+                .target(name: "Finite Macro Core"),
+                .product(name: "SwiftParser", package: "swift-syntax"),
+            ]
+        ),
+        .target(
+            name: "Finite Macro",
+            dependencies: [
+                .target(name: "Finite Macro Plugin"),
+                .target(name: "Finite"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Ordinal", package: "swift-ordinal"),
+            ]
+        ),
+        .macro(
+            name: "Finite Macro Plugin",
+            dependencies: [
+                .target(name: "Finite Macro Core"),
+                .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+                .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+            ]
+        ),
+        .target(
+            name: "Finite Macro Core",
+            dependencies: [
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+                .product(name: "Type Algebra Syntax", package: "swift-algebra"),
+            ]
+        ),
         .target(
             name: "Finite",
             dependencies: [
@@ -93,11 +105,11 @@ let package = Package(
             ],
             path: "Sources/Finite"
         ),
-        
+
         .target(
             name: "Finite Foundation Integration",
             dependencies: [
-                .target(name: "Finite"),
+                .target(name: "Finite")
             ],
             path: "Sources/Finite Foundation Integration"
         ),
@@ -127,14 +139,15 @@ let package = Package(
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    target.swiftSettings = (target.swiftSettings ?? []) + [
-        .strictMemorySafety(),
-        .enableUpcomingFeature("ExistentialAny"),
-        .enableUpcomingFeature("InternalImportsByDefault"),
-        .enableUpcomingFeature("MemberImportVisibility"),
-        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableUpcomingFeature("InferIsolatedConformances"),
-        .enableExperimentalFeature("Lifetimes"),
-        .treatAllWarnings(as: .error),
-    ]
+    target.swiftSettings =
+        (target.swiftSettings ?? []) + [
+            .strictMemorySafety(),
+            .enableUpcomingFeature("ExistentialAny"),
+            .enableUpcomingFeature("InternalImportsByDefault"),
+            .enableUpcomingFeature("MemberImportVisibility"),
+            .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+            .enableUpcomingFeature("InferIsolatedConformances"),
+            .enableExperimentalFeature("Lifetimes"),
+            .treatAllWarnings(as: .error),
+        ]
 }

@@ -12,7 +12,9 @@ where Self: CaseIterable, AllCases: RandomAccessCollection, AllCases.Index == In
     @inlinable
     public var ordinal: Ordinal::Ordinal {
 
-        let index = Self.allCases.firstIndex(of: self)!
+        guard let index = Self.allCases.firstIndex(of: self) else {
+            preconditionFailure("Every value is contained in allCases")
+        }
         return Ordinal::Ordinal(UInt(index))
     }
 

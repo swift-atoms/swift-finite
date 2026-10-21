@@ -1,129 +1,129 @@
 #if Tagged
-import Cardinal
-import Finite_Test_Support
-import Index
-import Ordinal
-import Tagged
-import Testing
+    import Cardinal
+    import Finite_Test_Support
+    import Index
+    import Ordinal
+    import Tagged
+    import Testing
 
-@testable import Finite
+    @testable import Finite
 
-@Suite
-struct `Bounded indices retain their element tags and nominal domains` {
-    @Test
-    func `The bounded index alias tags a nominal bounded ordinal`() {
-        let finite: Ordinal.Finite<8> = 0
-        let idx: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
-        let _: Tagged<Int, Ordinal.Finite<8>> = idx
+    @Suite
+    struct `Bounded indices retain their element tags and nominal domains` {
+        @Test
+        func `The bounded index alias tags a nominal bounded ordinal`() {
+            let finite: Ordinal.Finite<8> = 0
+            let idx: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
+            let _: Tagged<Int, Ordinal.Finite<8>> = idx
+        }
+
+        @Test
+        func `memory layout matches Ordinal`() {
+            #expect(MemoryLayout<Index<Int>.Bounded<8>>.size == MemoryLayout<Ordinal>.size)
+            #expect(MemoryLayout<Index<Int>.Bounded<8>>.stride == MemoryLayout<Ordinal>.stride)
+            #expect(MemoryLayout<Index<Int>.Bounded<8>>.alignment == MemoryLayout<Ordinal>.alignment)
+        }
+
+        @Test
+        func `memory layout matches unbounded Index`() {
+            #expect(MemoryLayout<Index<Int>.Bounded<8>>.size == MemoryLayout<Index<Int>>.size)
+            #expect(MemoryLayout<Index<Int>.Bounded<8>>.stride == MemoryLayout<Index<Int>>.stride)
+            #expect(MemoryLayout<Index<Int>.Bounded<8>>.alignment == MemoryLayout<Index<Int>>.alignment)
+        }
     }
 
-    @Test
-    func `memory layout matches Ordinal`() {
-        #expect(MemoryLayout<Index<Int>.Bounded<8>>.size == MemoryLayout<Ordinal>.size)
-        #expect(MemoryLayout<Index<Int>.Bounded<8>>.stride == MemoryLayout<Ordinal>.stride)
-        #expect(MemoryLayout<Index<Int>.Bounded<8>>.alignment == MemoryLayout<Ordinal>.alignment)
+    @Suite
+    struct `Bounded index bridges preserve valid positions` {
+        @Test(arguments: [0, 1, 2, 3, 7])
+        func `narrowing init returns Some for valid indices`(value: Int) {
+            let index: Index<Int> = Index(_unchecked: Ordinal(UInt(value)))
+            let bounded: Index<Int>.Bounded<8>? = .init(index)
+            #expect(bounded != nil)
+        }
+
+        @Test(arguments: [8, 9, 100])
+        func `narrowing init returns nil for out-of-bounds`(value: Int) {
+            let index: Index<Int> = Index(_unchecked: Ordinal(UInt(value)))
+            let bounded: Index<Int>.Bounded<8>? = .init(index)
+            #expect(bounded == nil)
+        }
+
+        @Test(arguments: [0, 1, 2, 3, 7])
+        func `widening init round-trips correctly`(value: Int) {
+            let index: Index<Int> = Index(_unchecked: Ordinal(UInt(value)))
+            let bounded: Index<Int>.Bounded<8> = .init(index)!
+            let roundTripped: Index<Int> = .init(bounded)
+            #expect(roundTripped == index)
+        }
+
+        @Test(arguments: [0, 1, 2, 3, 7])
+        func `map underlying produces same result as widening init`(value: Int) {
+            let index: Index<Int> = Index(_unchecked: Ordinal(UInt(value)))
+            let bounded: Index<Int>.Bounded<8> = .init(index)!
+            let viaInit: Index<Int> = .init(bounded)
+            let viaMap = bounded.map { $0.underlying }
+            #expect(viaInit == viaMap)
+        }
     }
 
-    @Test
-    func `memory layout matches unbounded Index`() {
-        #expect(MemoryLayout<Index<Int>.Bounded<8>>.size == MemoryLayout<Index<Int>>.size)
-        #expect(MemoryLayout<Index<Int>.Bounded<8>>.stride == MemoryLayout<Index<Int>>.stride)
-        #expect(MemoryLayout<Index<Int>.Bounded<8>>.alignment == MemoryLayout<Index<Int>>.alignment)
-    }
-}
+    @Suite
+    struct `Bounded index arithmetic preserves its finite domain` {
+        @Test
+        func `The bounded index exposes its next ordinal`() {
+            let finite: Ordinal.Finite<8> = 3
+            let bounded: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
+            let next = bounded.underlying.successor()
+            #expect(next != nil)
+            let expected: Ordinal.Finite<8> = 4
+            #expect(next == expected)
+        }
 
-@Suite
-struct `Bounded index bridges preserve valid positions` {
-    @Test(arguments: [0, 1, 2, 3, 7])
-    func `narrowing init returns Some for valid indices`(value: Int) {
-        let index: Index<Int> = Index(_unchecked: Ordinal(UInt(value)))
-        let bounded: Index<Int>.Bounded<8>? = .init(index)
-        #expect(bounded != nil)
-    }
+        @Test
+        func `successor at max returns nil`() {
+            let finite: Ordinal.Finite<8> = 7
+            let bounded: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
+            let next = bounded.underlying.successor()
+            #expect(next == nil)
+        }
 
-    @Test(arguments: [8, 9, 100])
-    func `narrowing init returns nil for out-of-bounds`(value: Int) {
-        let index: Index<Int> = Index(_unchecked: Ordinal(UInt(value)))
-        let bounded: Index<Int>.Bounded<8>? = .init(index)
-        #expect(bounded == nil)
-    }
+        @Test
+        func `The bounded index exposes its previous ordinal`() {
+            let finite: Ordinal.Finite<8> = 3
+            let bounded: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
+            let previous = bounded.underlying.predecessor()
+            #expect(previous != nil)
+            let expected: Ordinal.Finite<8> = 2
+            #expect(previous == expected)
+        }
 
-    @Test(arguments: [0, 1, 2, 3, 7])
-    func `widening init round-trips correctly`(value: Int) {
-        let index: Index<Int> = Index(_unchecked: Ordinal(UInt(value)))
-        let bounded: Index<Int>.Bounded<8> = .init(index)!
-        let roundTripped: Index<Int> = .init(bounded)
-        #expect(roundTripped == index)
-    }
-
-    @Test(arguments: [0, 1, 2, 3, 7])
-    func `map underlying produces same result as widening init`(value: Int) {
-        let index: Index<Int> = Index(_unchecked: Ordinal(UInt(value)))
-        let bounded: Index<Int>.Bounded<8> = .init(index)!
-        let viaInit: Index<Int> = .init(bounded)
-        let viaMap = bounded.map { $0.underlying }
-        #expect(viaInit == viaMap)
-    }
-}
-
-@Suite
-struct `Bounded index arithmetic preserves its finite domain` {
-    @Test
-    func `The bounded index exposes its next ordinal`() {
-        let finite: Ordinal.Finite<8> = 3
-        let bounded: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
-        let next = bounded.underlying.successor()
-        #expect(next != nil)
-        let expected: Ordinal.Finite<8> = 4
-        #expect(next == expected)
+        @Test
+        func `The bounded index exposes its shifted ordinal`() {
+            let finite: Ordinal.Finite<8> = 3
+            let bounded: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
+            let offset = bounded.underlying.offset(by: 2)
+            let expected: Ordinal.Finite<8> = 5
+            #expect(offset == expected)
+        }
     }
 
-    @Test
-    func `successor at max returns nil`() {
-        let finite: Ordinal.Finite<8> = 7
-        let bounded: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
-        let next = bounded.underlying.successor()
-        #expect(next == nil)
-    }
+    @Suite
+    struct `Bounded indices respect empty and singleton domains` {
+        @Test
+        func `narrowing with zero capacity always returns nil`() {
+            let index: Index<Int> = Index(_unchecked: .zero)
+            let bounded: Index<Int>.Bounded<0>? = .init(index)
+            #expect(bounded == nil)
+        }
 
-    @Test
-    func `The bounded index exposes its previous ordinal`() {
-        let finite: Ordinal.Finite<8> = 3
-        let bounded: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
-        let previous = bounded.underlying.predecessor()
-        #expect(previous != nil)
-        let expected: Ordinal.Finite<8> = 2
-        #expect(previous == expected)
+        @Test
+        func `narrowing with capacity 1 accepts only zero`() {
+            let zero: Index<Int> = Index(_unchecked: .zero)
+            let one: Index<Int> = Index(_unchecked: Ordinal(UInt(1)))
+            let zeroBounded: Index<Int>.Bounded<1>? = .init(zero)
+            let oneBounded: Index<Int>.Bounded<1>? = .init(one)
+            #expect(zeroBounded != nil)
+            #expect(oneBounded == nil)
+        }
     }
-
-    @Test
-    func `The bounded index exposes its shifted ordinal`() {
-        let finite: Ordinal.Finite<8> = 3
-        let bounded: Index<Int>.Bounded<8> = Tagged(_unchecked: finite)
-        let offset = bounded.underlying.offset(by: 2)
-        let expected: Ordinal.Finite<8> = 5
-        #expect(offset == expected)
-    }
-}
-
-@Suite
-struct `Bounded indices respect empty and singleton domains` {
-    @Test
-    func `narrowing with zero capacity always returns nil`() {
-        let index: Index<Int> = Index(_unchecked: .zero)
-        let bounded: Index<Int>.Bounded<0>? = .init(index)
-        #expect(bounded == nil)
-    }
-
-    @Test
-    func `narrowing with capacity 1 accepts only zero`() {
-        let zero: Index<Int> = Index(_unchecked: .zero)
-        let one: Index<Int> = Index(_unchecked: Ordinal(UInt(1)))
-        let zeroBounded: Index<Int>.Bounded<1>? = .init(zero)
-        let oneBounded: Index<Int>.Bounded<1>? = .init(one)
-        #expect(zeroBounded != nil)
-        #expect(oneBounded == nil)
-    }
-}
 
 #endif

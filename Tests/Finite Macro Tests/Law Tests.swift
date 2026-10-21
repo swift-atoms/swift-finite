@@ -1,8 +1,19 @@
 import Finite_Macro
 import Testing
-@Finite private enum Bit: Equatable { case zero; case one }
-@Finite private struct Bits: Equatable { let first: Bit; let second: Bit }
-@Finite private enum Choice: Equatable { case unit; case single(Bit); case pair(left: Bit, right: Bit) }
+
+@Finite private enum Bit: Equatable {
+    case zero
+    case one
+}
+@Finite private struct Bits: Equatable {
+    let first: Bit
+    let second: Bit
+}
+@Finite private enum Choice: Equatable {
+    case unit
+    case single(Bit)
+    case pair(left: Bit, right: Bit)
+}
 @Finite private enum Empty {}
 @Finite private struct Unit {}
 @Finite private struct Generic<Value: Finite.Enumerable> { let value: Value }

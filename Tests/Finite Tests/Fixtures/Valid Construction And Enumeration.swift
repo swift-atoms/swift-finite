@@ -2,7 +2,9 @@ import Finite
 
 func proof() {
     let arbitrary: Tagged<CapacityThree, Ordinal> = .init(Ordinal(99))
-    let checked = Ordinal.Finite<3>(Ordinal(2))!
+    guard let checked = Ordinal.Finite<3>(Ordinal(2)) else {
+        preconditionFailure("Ordinal 2 is within 0..<3")
+    }
     let values = Array(Ordinal.Finite<3>.allCases)
     requireEnumerable(Ordinal.Finite<3>.self)
     requireCaseIterable(Ordinal.Finite<3>.self)

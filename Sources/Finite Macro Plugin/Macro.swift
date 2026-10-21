@@ -1,7 +1,7 @@
-import SwiftSyntax
-import SwiftSyntaxMacros
-import SwiftSyntaxBuilder
 import Finite_Macro_Core
+import SwiftSyntax
+import SwiftSyntaxBuilder
+import SwiftSyntaxMacros
 
 struct Derive: MemberMacro, ExtensionMacro {}
 
@@ -26,16 +26,24 @@ extension Derive {
             || declaration.memberBlock.members.contains { $0.decl.is(InitializerDeclSyntax.self) }
     }
 
-    static func expansion(of node: AttributeSyntax, providingMembersOf declaration: some DeclGroupSyntax,
-        conformingTo protocols: [TypeSyntax], in context: some MacroExpansionContext) throws -> [DeclSyntax] {
+    static func expansion(
+        of node: AttributeSyntax,
+        providingMembersOf declaration: some DeclGroupSyntax,
+        conformingTo protocols: [TypeSyntax],
+        in context: some MacroExpansionContext
+    ) throws -> [DeclSyntax] {
         guard inlineMembers(declaration) else { return [] }
         return try Derivation.extensions(of: declaration, type: TypeSyntax(stringLiteral: "Self"))
             .flatMap { $0.memberBlock.members.map(\.decl) }
     }
 
-    static func expansion(of node: AttributeSyntax, attachedTo declaration: some DeclGroupSyntax,
-        providingExtensionsOf type: some TypeSyntaxProtocol, conformingTo protocols: [TypeSyntax],
-        in context: some MacroExpansionContext) throws -> [ExtensionDeclSyntax] {
+    static func expansion(
+        of node: AttributeSyntax,
+        attachedTo declaration: some DeclGroupSyntax,
+        providingExtensionsOf type: some TypeSyntaxProtocol,
+        conformingTo protocols: [TypeSyntax],
+        in context: some MacroExpansionContext
+    ) throws -> [ExtensionDeclSyntax] {
         // Native conformances are essential when this macro is itself attached
         // inside peer-macro output: Swift may not lower nested extension output.
         guard !inlineMembers(declaration) else { return [] }
@@ -44,14 +52,16 @@ extension Derive {
             var result = generated
             if var clause = result.inheritanceClause {
                 let remaining = clause.inheritedTypes.filter { item in
-                    let leaf = item.type.trimmedDescription.split(separator: ".").last!
+                    guard let leaf = item.type.trimmedDescription.split(separator: ".").last else { return true }
                     return !inherited.contains { $0 == leaf || $0.hasSuffix("." + leaf) }
                 }
-                clause.inheritedTypes = InheritedTypeListSyntax(remaining.enumerated().map { index, item in
-                    var item = item
-                    item.trailingComma = index + 1 == remaining.count ? nil : .commaToken(trailingTrivia: .space)
-                    return item
-                })
+                clause.inheritedTypes = InheritedTypeListSyntax(
+                    remaining.enumerated().map { index, item in
+                        var item = item
+                        item.trailingComma = index + 1 == remaining.count ? nil : .commaToken(trailingTrivia: .space)
+                        return item
+                    }
+                )
                 result.inheritanceClause = clause.inheritedTypes.isEmpty ? nil : clause
             }
             return result

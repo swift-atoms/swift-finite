@@ -70,7 +70,8 @@ extension Ordinal::Ordinal.Finite {
 
     @inlinable
     public func injected<let M: Int>()
-        -> Ordinal::Ordinal.Finite<M> {
+        -> Ordinal::Ordinal.Finite<M>
+    {
         precondition(
             N > 0 && M >= N && underlying.rawValue < UInt(N),
             "Injection requires a valid source ordinal and an equal or larger destination domain"
@@ -80,7 +81,8 @@ extension Ordinal::Ordinal.Finite {
 
     @inlinable
     public func projected<let M: Int>()
-        -> Ordinal::Ordinal.Finite<M>? {
+        -> Ordinal::Ordinal.Finite<M>?
+    {
         guard M > 0, underlying.rawValue < UInt(M) else { return nil }
         return Ordinal::Ordinal.Finite<M>(_unchecked: underlying)
     }
@@ -93,7 +95,8 @@ extension Ordinal::Ordinal.Finite {
         -> (
             row: Ordinal::Ordinal.Finite<Rows>,
             column: Ordinal::Ordinal.Finite<Columns>
-        )? {
+        )?
+    {
         guard Rows > 0, Columns > 0 else { return nil }
         let capacity = Rows.multipliedReportingOverflow(by: Columns)
         guard !capacity.overflow, capacity.partialValue == N else { return nil }
