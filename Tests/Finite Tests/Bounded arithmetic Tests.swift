@@ -52,14 +52,20 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
     @Test
     func `Wide bounded positions retain exact offsets and endpoint clamps`() {
         let position = 4_294_967_295
-        let value = Ordinal.Finite<4_294_967_296>(position)!
-        #expect(value.offset(by: -position)?.underlying.rawValue == 0)
-        #expect(value.offset(by: 0) == value)
-        #expect(value.offset(by: 1) == nil)
-        #expect(value.offset(by: Int.max) == nil)
-        #expect(value.offset(by: Int.min) == nil)
-        #expect(value.clamped(offsetBy: Int.max) == value)
-        #expect(value.clamped(offsetBy: Int.min).underlying.rawValue == 0)
+        #expect(Ordinal.Finite<4_294_967_296>(position)!.offset(by: -position)?.underlying.rawValue == 0)
+        #expect(
+            Ordinal.Finite<4_294_967_296>(position)!.offset(by: 0)?.underlying.rawValue == UInt(position)
+        )
+        #expect(Ordinal.Finite<4_294_967_296>(position)!.offset(by: 1)?.underlying.rawValue == nil)
+        #expect(Ordinal.Finite<4_294_967_296>(position)!.offset(by: Int.max)?.underlying.rawValue == nil)
+        #expect(Ordinal.Finite<4_294_967_296>(position)!.offset(by: Int.min)?.underlying.rawValue == nil)
+        #expect(
+            Ordinal.Finite<4_294_967_296>(position)!.clamped(offsetBy: Int.max).underlying.rawValue
+                == UInt(position)
+        )
+        #expect(
+            Ordinal.Finite<4_294_967_296>(position)!.clamped(offsetBy: Int.min).underlying.rawValue == 0
+        )
     }
 
     @Test
