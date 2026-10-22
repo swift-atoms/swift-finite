@@ -47,7 +47,8 @@ struct `Bounded ordinal conversions preserve the destination domain` {
         await #expect(processExitsWith: .success) {
             let source = Ordinal.Finite<3>(Int(1))!
             typealias Negative = Ordinal.Finite<-3>
-            precondition((source.projected() as Negative?) == nil)
+            let resultIsNil = (source.projected() as Negative?) == nil
+            precondition(resultIsNil)
         }
     }
 }

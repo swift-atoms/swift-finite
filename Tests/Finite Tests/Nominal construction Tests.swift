@@ -37,8 +37,10 @@ struct `Nominal bounded ordinals enforce their construction domain` {
         }
         #expect(Ordinal.Finite<0>(Ordinal.zero) == nil)
         typealias Negative = Ordinal.Finite<-3>
-        #expect(Negative(Int(0))?.underlying.rawValue == nil)
-        #expect(Negative(Ordinal.zero)?.underlying.rawValue == nil)
+        let negativeIntegerIsNil = Negative(Int(0)) == nil
+        let negativeOrdinalIsNil = Negative(Ordinal.zero) == nil
+        #expect(negativeIntegerIsNil)
+        #expect(negativeOrdinalIsNil)
     }
 
     @Test(arguments: [0, 1, 2])

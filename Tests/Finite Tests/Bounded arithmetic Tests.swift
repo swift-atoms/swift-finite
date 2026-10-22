@@ -107,9 +107,11 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
         let value = Ordinal.Finite<4>(Int(1))!
         let emptyRows: (Ordinal.Finite<0>, Ordinal.Finite<4>)? = value.decomposed()
         let emptyColumns: (Ordinal.Finite<4>, Ordinal.Finite<0>)? = value.decomposed()
+        let negativeIsNil =
+            (value.decomposed() as (Ordinal.Finite<-2>, Ordinal.Finite<-2>)?) == nil
         #expect(emptyRows == nil)
         #expect(emptyColumns == nil)
-        #expect((value.decomposed() as (Ordinal.Finite<-2>, Ordinal.Finite<-2>)?) == nil)
+        #expect(negativeIsNil)
     }
 
     @Test
