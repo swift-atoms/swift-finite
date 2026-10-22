@@ -7,17 +7,19 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
     func `Unrepresentable intermediate arithmetic returns the declared result`(operation: String) async {
         await #expect(processExitsWith: .success) { [operation = operation as String] in
             let value = Ordinal.Finite<2>(Int(1))!
+            typealias Wide = Ordinal.Finite<4_294_967_296>
             switch operation {
             case "offset":
                 precondition(value.offset(by: Int.max) == nil)
             case "clamp":
                 precondition(value.clamped(offsetBy: Int.max) == value)
             case "decompose":
-                let result: (Ordinal.Finite<4_294_967_296>, Ordinal.Finite<4_294_967_296>)? = value.decomposed()
-                precondition(result == nil)
+                precondition((value.decomposed() as (Wide, Wide)?) == nil)
             case "compose":
-                let component = Ordinal.Finite<4_294_967_296>(Int(1))!
-                let result: Ordinal.Finite<2>? = .composed(row: component, column: component)
+                let result: Ordinal.Finite<2>? = .composed(
+                    row: Wide(Int(1))!,
+                    column: Wide(Int(1))!
+                )
                 precondition(result == nil)
             default:
                 preconditionFailure("Unknown operation")
@@ -90,9 +92,12 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
     func `Wide representable products preserve the final row and column`() {
         let row = Ordinal.Finite<65536>(Int(65_535))!
         let column = Ordinal.Finite<65536>(Int(65_535))!
-        let value: Ordinal.Finite<4_294_967_296>? = .composed(row: row, column: column)
-        #expect(value?.underlying.rawValue == 4_294_967_295)
-        let coordinates: (Ordinal.Finite<65536>, Ordinal.Finite<65536>)? = value?.decomposed()
+        #expect(
+            Ordinal.Finite<4_294_967_296>.composed(row: row, column: column)?.underlying.rawValue
+                == 4_294_967_295
+        )
+        let coordinates: (Ordinal.Finite<65536>, Ordinal.Finite<65536>)? =
+            Ordinal.Finite<4_294_967_296>.composed(row: row, column: column)?.decomposed()
         #expect(coordinates?.0 == row)
         #expect(coordinates?.1 == column)
     }
@@ -102,10 +107,9 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
         let value = Ordinal.Finite<4>(Int(1))!
         let emptyRows: (Ordinal.Finite<0>, Ordinal.Finite<4>)? = value.decomposed()
         let emptyColumns: (Ordinal.Finite<4>, Ordinal.Finite<0>)? = value.decomposed()
-        let negative: (Ordinal.Finite<-2>, Ordinal.Finite<-2>)? = value.decomposed()
         #expect(emptyRows == nil)
         #expect(emptyColumns == nil)
-        #expect(negative == nil)
+        #expect((value.decomposed() as (Ordinal.Finite<-2>, Ordinal.Finite<-2>)?) == nil)
     }
 
     @Test

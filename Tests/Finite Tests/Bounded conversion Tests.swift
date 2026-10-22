@@ -46,8 +46,8 @@ struct `Bounded ordinal conversions preserve the destination domain` {
     func `Projection into a negative bound returns no ordinal`() async {
         await #expect(processExitsWith: .success) {
             let source = Ordinal.Finite<3>(Int(1))!
-            let result: Ordinal.Finite<-3>? = source.projected()
-            precondition(result == nil)
+            typealias Negative = Ordinal.Finite<-3>
+            precondition((source.projected() as Negative?) == nil)
         }
     }
 }

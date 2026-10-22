@@ -36,8 +36,9 @@ struct `Nominal bounded ordinals enforce their construction domain` {
                 && emptyInteger?.underlying.rawValue == 0
         }
         #expect(Ordinal.Finite<0>(Ordinal.zero) == nil)
-        #expect(Ordinal.Finite<-3>(Int(0))?.underlying.rawValue == nil)
-        #expect(Ordinal.Finite<-3>(Ordinal.zero)?.underlying.rawValue == nil)
+        typealias Negative = Ordinal.Finite<-3>
+        #expect(Negative(Int(0))?.underlying.rawValue == nil)
+        #expect(Negative(Ordinal.zero)?.underlying.rawValue == nil)
     }
 
     @Test(arguments: [0, 1, 2])
@@ -122,22 +123,18 @@ struct `Nominal bounded ordinals enforce their construction domain` {
         constructor: String
     ) async {
         await #expect(processExitsWith: .failure) { [constructor = constructor as String] in
+            typealias Negative = Ordinal.Finite<-3>
             switch constructor {
             case "integer":
-                let value: Ordinal.Finite<-3> = .init(_unchecked: Int(0))
-                print(value.underlying.rawValue)
+                print(Negative(_unchecked: Int(0)).underlying.rawValue)
             case "ordinal":
-                let value: Ordinal.Finite<-3> = .init(_unchecked: Ordinal.zero)
-                print(value.underlying.rawValue)
+                print(Negative(_unchecked: Ordinal.zero).underlying.rawValue)
             case "literal":
-                let value: Ordinal.Finite<-3> = 0
-                print(value.underlying.rawValue)
+                print((0 as Negative).underlying.rawValue)
             case "enumerable":
-                typealias Negative = Ordinal.Finite<-3>
                 print(construct(Negative.self, at: .zero).underlying.rawValue)
             case "zero":
-                let value: Ordinal.Finite<-3> = .zero
-                print(value.underlying.rawValue)
+                print(Negative.zero.underlying.rawValue)
             default:
                 preconditionFailure("Unknown constructor")
             }
