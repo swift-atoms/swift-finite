@@ -94,14 +94,14 @@ let package = Package(
         .target(
             name: "Finite",
             dependencies: [
-                .product(name: "Difference", package: "swift-difference", condition: .when(traits: ["Tagged"])),
+                .product(name: "Difference", package: "swift-difference"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Index", package: "swift-index", condition: .when(traits: ["Algebra", "Tagged"])),
-                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Algebra", "Tagged"])),
-                .product(name: "Iterator", package: "swift-iterator", condition: .when(traits: ["Iterator"])),
-                .product(name: "Algebra", package: "swift-algebra", condition: .when(traits: ["Algebra"])),
-                .product(name: "Polarity", package: "swift-polarity", condition: .when(traits: ["Polarity"])),
+                .product(name: "Index", package: "swift-index"),
+                .product(name: "Tagged", package: "swift-tagged"),
+                .product(name: "Iterator", package: "swift-iterator"),
+                .product(name: "Algebra", package: "swift-algebra"),
+                .product(name: "Polarity", package: "swift-polarity"),
             ],
             path: "Sources/Finite"
         ),
@@ -117,7 +117,7 @@ let package = Package(
             name: "Finite Test Support",
             dependencies: [
                 .target(name: "Finite"),
-                .product(name: "Index Test Support", package: "swift-index", condition: .when(traits: ["Tagged"])),
+                .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
         ),
