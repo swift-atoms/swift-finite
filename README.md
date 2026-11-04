@@ -1,70 +1,19 @@
-# Finite enumeration
+# swift-finite
 
-`@Finite` derives a chosen bijection between the values of a stored product or
-nonrecursive sum and the ordinal range `0..<count`. It supplies `count`, `ordinal`,
-ordinal construction, and `CaseIterable`. `allCases` is an indexed collection;
-it does not allocate all inhabitants up front.
+Use this package when a type has finitely many values and you want to number them, enumerate them all, or move between a value and its position. Attach `@Finite` from the `Finite Macro` product to a struct or enum whose stored parts are finite, or conform by hand to `Finite.Enumerable`. For a position bounded by a compile-time size, use `Ordinal.Finite<N>`. For a position with no upper bound, use `Ordinal` from swift-ordinal.
 
-```swift
-import Finite_Macro
+## Laws
 
-@Finite
-struct Questions {
-    let first: Bool?
-    let second: Bool?
-}
-
-// Questions.count.rawValue == 9
-// Questions.allCases enumerates every combination exactly once.
-```
-
-`Finite.Enumerable` is the underlying capability. It does not imply `Sendable`
-or require `CaseIterable`. Boolean and conditional Optional conformances belong
-to this package's protocol, without retroactive standard-library conformances.
-Declare concurrency capabilities separately when the consumer requires them.
-
-Products use mixed-radix ranks in declaration order; sums use declaration-order
-alternative offsets. Optional starts with `nil`, followed by the wrapped values;
-Boolean orders `false` before `true`. Reordering the schema changes ordinals.
-Ordinals are not stable persistence identifiers across schema revisions.
-
-Construction must preserve every stored coordinate. The macro accepts a
-synthesized memberwise initializer or an explicit initializer consisting solely
-of direct field assignments, preserving parameter labels. Validating and
-normalizing construction requires a manually established finite witness.
-Recursive types are unsupported. Cardinal arithmetic traps rather than wraps
-when the result cannot be represented by UInt. Generic requirements follow
-stored components, not phantom parameters.
-
-`@Interface` composes finite enumeration for generated inputs whose fields are
-standard Boolean types or nested Optionals of those types, including empty
-inputs. Domain declarations need no input attributes or conformance strings:
-
-```swift
-import Interface_Macro
-
-@Interface
-public struct Assessment: Assessment.Interface {
-    public protocol Interface {
-        func assess(first: Bool?, second: Bool?) -> Bool?
-    }
-}
-```
-
-The composition also derives a lazy `values` collection for homogeneous inputs
-when its member names are available. Enumeration and coordinate access remain
-separate capabilities, owned by `@Finite` and `@Representable` respectively.
-`@Operations` itself has no dependency on either derivation.
-
-Automatic finite eligibility is conservative syntax analysis, not compiler type
-resolution: arbitrary nominal types and aliases are not automatically recognized
-as finite. Explicit `@Finite` derivation continues to support components with
-`Finite.Enumerable` witnesses. Swift Testing can consume `Input.allCases` once
-that input separately conforms to `Sendable`.
-
-Use the local `macros.xcworkspace`, scheme `Finite Inputs`, to exercise the finite
-laws, operation/interface composition, and the BW2 article 1.1 consumer together.
-
-## Optional integrations
-
-Core finite enumeration, macros, and bounded ordinal operations are available without optional dependencies. Enumeration uses Swift `Int` indices by default. Enable `Tagged` to use domain-tagged indices and related adapters; this enables the matching Cardinal and Ordinal integrations. `Algebra` requires `Tagged`. `Iterator` adds the iterator protocol integration and requires `Tagged`; `Polarity` is independent. Optional integrations are opt-in; no traits are enabled by default.
+- A finite type numbers its values from zero up to its count, one ordinal per value, and turning an ordinal back into a value gives the same value.
+- `@Finite` numbers a struct's values like the digits of a number in declaration order: the first stored field is the most significant and the last changes fastest. An enum's cases follow in declaration order, each case's values after all values of the cases before it.
+- `Optional` puts nil first and then the wrapped values. `Bool` puts false before true. `Polarity` puts positive before negative.
+- Reordering fields or cases changes the ordinals, so ordinals are not stable identifiers across versions of a type.
+- `Finite.Enumerable.allCases` builds each value from its ordinal when it is read. It never stores all values.
+- Counting traps rather than wraps when a count does not fit in a `UInt`. A product with a zero factor counts zero even when the other factors would overflow.
+- `@Finite` refuses recursive types, enums with raw values or without `Copyable`, and structs with a constant field that has a default value. A struct must have the synthesized memberwise initializer or one that assigns each parameter straight to its field. A type that validates or normalizes in its initializer needs a hand-written conformance.
+- A generic parameter must be `Finite.Enumerable` only when a stored field's type mentions it. A phantom parameter needs nothing.
+- A type that is `CaseIterable` and `Equatable`, with an `Int`-indexed random-access `allCases`, takes its count and ordinals from `allCases`. Finding a value's ordinal then searches `allCases` in order.
+- `Ordinal.Finite<N>` has no values when N is zero or negative. Its failable initializers return nil outside zero up to N. Its unchecked initializers and integer literals trap instead.
+- `Ordinal.Finite.successor()` and `Ordinal.Finite.predecessor()` return nil past either end, and so does `Ordinal.Finite.offset(by:)`. `Ordinal.Finite.clamped(offsetBy:)` stops at the first or last position.
+- `Ordinal.Finite.injected()` traps when the destination is smaller than the source. `Ordinal.Finite.projected()` returns nil when the position does not fit.
+- `Ordinal.Finite.decomposed()` and `Ordinal.Finite.composed(row:column:)` use row-major order and return nil unless rows times columns equals N.
