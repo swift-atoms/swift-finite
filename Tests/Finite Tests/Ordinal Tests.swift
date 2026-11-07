@@ -131,7 +131,7 @@
 
         @Test
         func `complement is involution`() {
-            for i in 0..<5 {
+            (0..<5).forEach { i in
                 let ordinal = Ordinal.Finite<5>(i)!
                 #expect(ordinal.complement().complement() == ordinal)
             }
@@ -173,7 +173,7 @@
 
         @Test
         func `decomposed and composed are inverses`() {
-            for i in 0..<12 {
+            (0..<12).forEach { i in
                 let index: Ordinal.Finite<12> = Ordinal.Finite(i)!
                 let (row, column): (Ordinal.Finite<3>, Ordinal.Finite<4>) = index.decomposed()!
                 let reconstructed: Ordinal.Finite<12> = .composed(row: row, column: column)!

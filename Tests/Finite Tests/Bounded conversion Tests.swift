@@ -33,7 +33,7 @@ struct `Bounded ordinal conversions preserve the destination domain` {
 
     @Test
     func `Projection selects exactly the destination prefix of the source domain`() {
-        for position in 0..<8 {
+        (0..<8).forEach { position in
             let source = Ordinal.Finite<8>(position)!
             let result: Ordinal.Finite<3>? = source.projected()
             #expect(result?.underlying.rawValue == (position < 3 ? UInt(position) : nil))

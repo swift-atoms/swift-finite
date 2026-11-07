@@ -62,7 +62,7 @@ struct `Nominal bounded ordinals enforce their construction domain` {
     func `Enumeration contains every constructible ordinal exactly once`() {
         let values = Array(Ordinal.Finite<7>.allCases)
         #expect(values.map { $0.underlying.rawValue } == Array(UInt(0)..<7))
-        for position in 0..<7 {
+        (0..<7).forEach { position in
             let constructed = Ordinal.Finite<7>(position)!
             #expect(values.filter { $0 == constructed }.count == 1)
         }

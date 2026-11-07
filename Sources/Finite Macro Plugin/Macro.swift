@@ -20,8 +20,6 @@ extension Derive {
 
     private static func inlineMembers(_ declaration: some DeclGroupSyntax) -> Bool {
         guard !isGeneric(declaration), hasNativeEnumeration(declaration) else { return false }
-        // An ordinal initializer in a struct body suppresses Swift's synthesized
-        // memberwise initializer. Generated Inputs already have explicit construction.
         return declaration.is(EnumDeclSyntax.self)
             || declaration.memberBlock.members.contains { $0.decl.is(InitializerDeclSyntax.self) }
     }
@@ -44,8 +42,6 @@ extension Derive {
         conformingTo protocols: [TypeSyntax],
         in context: some MacroExpansionContext
     ) throws -> [ExtensionDeclSyntax] {
-        // Native conformances are essential when this macro is itself attached
-        // inside peer-macro output: Swift may not lower nested extension output.
         guard !inlineMembers(declaration) else { return [] }
         let inherited = declaration.inheritanceClause?.inheritedTypes.map { $0.type.trimmedDescription } ?? []
         return try Derivation.extensions(of: declaration, type: type).map { generated in

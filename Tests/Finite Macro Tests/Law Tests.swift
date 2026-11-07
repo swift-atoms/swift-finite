@@ -24,7 +24,7 @@ import Testing
     #expect(Empty.count.rawValue == 0)
     #expect(Unit.count.rawValue == 1)
     #expect(Generic<Bit>.count.rawValue == 2)
-    for rank in 0..<Choice.count.rawValue {
+    (0..<Choice.count.rawValue).forEach { rank in
         let value = Choice(Ordinal(rank))
         #expect(value?.ordinal.rawValue == rank)
     }

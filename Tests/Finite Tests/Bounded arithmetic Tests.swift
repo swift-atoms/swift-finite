@@ -30,7 +30,7 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
     @Test
     func `Offsets and clamps agree with wider arithmetic at both integer extremes`() {
         let offsets = [Int.min, Int.min + 1, -100, -17, -1, 0, 1, 17, 100, Int.max - 1, Int.max]
-        for position in 0..<17 {
+        (0..<17).forEach { position in
             let value = Ordinal.Finite<17>(position)!
             for offset in offsets {
                 let mathematical = Int128(position) + Int128(offset)
@@ -72,7 +72,7 @@ struct `Bounded ordinals preserve their domains through arithmetic` {
 
     @Test
     func `Row major products agree with independent coordinate arithmetic`() {
-        for row in 0..<3 {
+        (0..<3).forEach { row in
             for column in 0..<7 {
                 let expected = row * 7 + column
                 let value: Ordinal.Finite<21>? = .composed(

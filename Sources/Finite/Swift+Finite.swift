@@ -1,8 +1,6 @@
 public import Cardinal
 public import Ordinal
 
-// These conformances belong to Finite's own protocol. They do not add
-// retroactive CaseIterable conformances to standard-library types.
 extension Bool: Finite.Enumerable {
     public static var count: Cardinal { Cardinal(UInt(2)) }
     public var ordinal: Ordinal { Ordinal(UInt(self ? 1 : 0)) }

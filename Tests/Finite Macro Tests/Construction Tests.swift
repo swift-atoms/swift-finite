@@ -12,7 +12,7 @@ import Testing
 ])
 func rejectsStructuresWithoutTheRequiredFiniteConstruction(source: String) throws {
     let declaration = try #require(Parser.parse(source: source).statements.first?.item.as(DeclSyntax.self))
-    #expect(throws: (any Error).self) {
+    #expect(throws: (any Swift.Error).self) {
         if let structure = declaration.as(StructDeclSyntax.self) {
             _ = try Derivation.extensions(of: structure, type: TypeSyntax(stringLiteral: "Invalid"))
         } else {

@@ -64,7 +64,7 @@
         func `Distances and offsets are inverses for all small collection indices`() {
             let enumeration = Ordinal.Finite<10>.allCases
             typealias Position = Finite.Enumeration<Ordinal.Finite<10>>.Index
-            for start in 0...10 {
+            (0...10).forEach { start in
                 for end in 0...10 {
                     let first = Position(_unchecked: Ordinal(UInt(start)))
                     let last = Position(_unchecked: Ordinal(UInt(end)))
